@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スペースシンドローム プロジェクト - インフォグラフィック</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #4a26fd, #b721ff);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .world-setting {
+            grid-column: span 6;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid #ffd966;
+            height: 100%;
+        }
+        
+        .trade-system {
+            grid-column: span 6;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid #4a86e8;
+            height: 100%;
+        }
+        
+        .game-types {
+            grid-column: span 12;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+        
+        .game-types-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .game-type {
+            width: 32%;
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .game-type:hover {
+            transform: translateY(-5px);
+        }
+        
+        .game-type h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .game-type-a {
+            background-color: rgba(147, 196, 125, 0.2);
+            border-left: 5px solid #93c47d;
+        }
+        
+        .game-type-b {
+            background-color: rgba(111, 168, 220, 0.2);
+            border-left: 5px solid #6fa8dc;
+        }
+        
+        .game-type-c {
+            background-color: rgba(224, 102, 102, 0.2);
+            border-left: 5px solid #e06666;
+        }
+        
+        .icon {
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .icon-a {
+            background-color: #93c47d;
+        }
+        
+        .icon-b {
+            background-color: #6fa8dc;
+        }
+        
+        .icon-c {
+            background-color: #e06666;
+        }
+        
+        .features {
+            grid-column: span 6;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid #ea9999;
+        }
+        
+        .real-estate {
+            grid-column: span 6;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid #c27ba0;
+        }
+        
+        .ideas {
+            grid-column: span 12;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 5px solid #b6d7a8;
+        }
+        
+        .ideas-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .idea-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #674ea7, #9b59b6);
+            color: white;
+            border-radius: 12px;
+            margin-top: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: #ddd;
+        }
+        
+        ul {
+            list-style-type: none;
+            margin-left: 15px;
+        }
+        
+        li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        li:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4a86e8;
+        }
+        
+        .game-flow {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .flow-diagram {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .flow-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            width: 30%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .flow-line {
+            position: absolute;
+            height: 3px;
+            background-color: #674ea7;
+            top: 50%;
+            left: 15%;
+            right: 15%;
+            z-index: 0;
+        }
+        
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+        
+        .arrow-right {
+            border-width: 10px 0 10px 15px;
+            border-color: transparent transparent transparent #674ea7;
+        }
+        
+        .arrow1 {
+            left: 33%;
+        }
+        
+        .arrow2 {
+            left: 66%;
+        }
+        
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .world-setting, .trade-system, .features, .real-estate, .ideas {
+                grid-column: span 12;
+            }
+            
+            .game-types-container {
+                flex-direction: column;
+            }
+            
+            .game-type {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .ideas-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-diagram {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .flow-item {
+                width: 80%;
+                margin-bottom: 30px;
+            }
+            
+            .flow-line {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>スペースシンドローム プロジェクト</h1>
+            <p>ゲーム概要資料 ver.001</p>
+        </div>
+        
+        <div class="main-grid">
+            <div class="world-setting">
+                <h2>世界観・ストーリー</h2>
+                <ul>
+                    <li><strong>αウィルス</strong>によるパンデミックで「シンドローマー」と呼ばれる特殊能力者が誕生</li>
+                    <li>現実と過去/未来/空想の境界が曖昧になる「ジャパニーズシンドローム」現象</li>
+                    <li>善悪のシンドローマーが対立し、日本各地で争いが発生</li>
+                    <li>最終目標は「スペースジャパン」を完成させることでシンドローム現象を平和的に解決すること</li>
+                    <li>結晶体の収集がシンドローマーの力の源</li>
+                </ul>
+            </div>
+            
+            <div class="trade-system">
+                <h2>取引システムと経済圏</h2>
+                <ul>
+                    <li>3つのゲームタイプを結ぶ「取引場」の存在</li>
+                    <li>ゲーム内で獲得したポイントやアイテムを売買可能</li>
+                    <li><strong>Play to Earn</strong>機能 — ゲームをしながら稼げる仕組み</li>
+                    <li>実店舗と連動した「特化マーケティング」機能</li>
+                    <li>アイテム取引が増えると実際の地域不動産に手数料が還元される</li>
+                    <li>「3者相対性」（三すくみ）のアイテムシステム — どんな強力アイテムにも天敵が存在</li>
+                </ul>
+            </div>
+            
+            <div class="game-types">
+                <h2>3種類のゲーム</h2>
+                
+                <div class="game-types-container">
+                    <div class="game-type game-type-a">
+                        <h3><span class="icon icon-a">A</span>カジュアルゲーム</h3>
+                        <ul>
+                            <li>誰でも簡単にプレイ可能</li>
+                            <li>プラットフォームを公開し、他社ゲームも参加可能</li>
+                            <li>より多くのユーザーを獲得するための入口</li>
+                            <li>ハイパーカジュアルなゲーム性</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="game-type game-type-b">
+                        <h3><span class="icon icon-b">B</span>シミュレーションゲーム</h3>
+                        <ul>
+                            <li>町、都市、港、軍港、城などの創造・運営</li>
+                            <li>アイテム制作、兵士トレーニング</li>
+                            <li>地域特定された不動産に事業登録可能</li>
+                            <li>タイプCユーザーへのアイテム供給</li>
+                            <li>マインクラフト、シムシティ系のゲーム性</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="game-type game-type-c">
+                        <h3><span class="icon icon-c">C</span>RPG攻防戦</h3>
+                        <ul>
+                            <li>個人/チームでの対戦(PvP)</li>
+                            <li>根拠地争奪の攻防戦</li>
+                            <li>結晶体の収集でレベルアップ</li>
+                            <li>一定以上の結晶体で最終ミッションにチャレンジ可能</li>
+                            <li>ゲーム世界の歴史に名を残せる</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="game-flow">
+                    <h3>ゲームフロー</h3>
+                    <div class="flow-diagram">
+                        <div class="flow-line"></div>
+                        <div class="arrow arrow1 arrow-right"></div>
+                        <div class="arrow arrow2 arrow-right"></div>
+                        
+                        <div class="flow-item">
+                            <h4>アイテム/リソース生成</h4>
+                            <p>タイプAとBでリソースやアイテムを生成・作成</p>
+                        </div>
+                        
+                        <div class="flow-item">
+                            <h4>取引と流通</h4>
+                            <p>取引場でのアイテム売買・流通</p>
+                        </div>
+                        
+                        <div class="flow-item">
+                            <h4>攻防戦と経済循環</h4>
+                            <p>タイプCの攻防戦で消費・新たな需要が生まれる</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <h2>特徴・差別化要素</h2>
+                <ul>
+                    <li>3種類のゲームが世界観を共有する複合的なゲーム群</li>
+                    <li>地域活性化に貢献するゲーム経済圏の構築</li>
+                    <li>プレイヤー主体でゲーム世界が構築される</li>
+                    <li>カジュアルからハードコアまで様々なプレイスタイルに対応</li>
+                    <li>実在する日本の地域をベースにした世界観</li>
+                    <li>実店舗・地域と連動したゲーム体験</li>
+                </ul>
+            </div>
+            
+            <div class="real-estate">
+                <h2>不動産・地域連携</h2>
+                <ul>
+                    <li>実在する日本全国の地域が舞台</li>
+                    <li>特定不動産を根拠地として活用</li>
+                    <li>地域のキャラクターや素材を活用</li>
+                    <li>ゲーム内活動の手数料が地域に還元される仕組み</li>
+                    <li>地域の特性がゲーム内の特性として反映</li>
+                    <li>地域振興と連動したゲーム展開</li>
+                </ul>
+            </div>
+            
+            <div class="ideas">
+                <h2>検討課題・アイデア</h2>
+                <div class="ideas-grid">
+                    <div class="idea-card">
+                        <h3>合戦イベント</h3>
+                        <p>定期的な大規模イベントで歴史が刻まれる仕組み。ガンダムの一年戦争のような年表が作られていく。</p>
+                    </div>
+                    
+                    <div class="idea-card">
+                        <h3>放置ゲー要素</h3>
+                        <p>ギルド的な概念と地域連携。「私は大阪府岸和田市の民！」という帰属意識の強化。人がいるだけで効果がある仕組み。</p>
+                    </div>
+                    
+                    <div class="idea-card">
+                        <h3>わかりやすさの担保</h3>
+                        <p>「シンドローマー=青」「ブラッケン=赤」「クラッシャー=黄」のような明確なイメージカラー設定。</p>
+                    </div>
+                    
+                    <div class="idea-card">
+                        <h3>アセット管理</h3>
+                        <p>リアル連携時のビジュアル更新課題。GoogleMapのように定期的な更新が必要。</p>
+                    </div>
+                    
+                    <div class="idea-card">
+                        <h3>NFT/法務面</h3>
+                        <p>金融商品取引法や資金決済法の検討。ウォレット不要で売買できる仕組み。</p>
+                    </div>
+                    
+                    <div class="idea-card">
+                        <h3>ゲーム性の優先</h3>
+                        <p>ビジネススキーム先行ではなくゲーム自体の面白さを優先。非ゲーマー層までターゲットを広げる。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <h2 style="color: white; margin-bottom: 15px;">最終目標：スペースジャパンの完成</h2>
+            <p>シンドローム現象の平和的解決を目指し、プレイヤーの活動が物語と世界を形作る</p>
+        </div>
+    </div>
+</body>
+</html>
