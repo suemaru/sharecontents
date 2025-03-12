@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #121212, #2a2a2a);
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide {
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            background: linear-gradient(135deg, #1e1e2e, #2d2d44);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .slide::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #ff6b6b, #6b66ff);
+            opacity: 0.1;
+            border-radius: 0 0 0 100%;
+        }
+        h1 {
+            font-size: 3.5em;
+            margin: 0;
+            background: linear-gradient(90deg, #ff6b6b, #6b66ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            letter-spacing: -1px;
+            position: relative;
+        }
+        .subtitle {
+            font-size: 1.5em;
+            margin-top: 10px;
+            color: #a0a0c0;
+            font-weight: 400;
+        }
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            align-items: center;
+        }
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 4px solid #6b66ff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .feature h3 {
+            margin: 0 0 10px 0;
+            color: #ff6b6b;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+        }
+        .feature p {
+            margin: 0;
+            line-height: 1.6;
+            color: #c0c0d0;
+        }
+        .year {
+            font-size: 0.8em;
+            background: rgba(107, 102, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 10px;
+            color: #c0c0d0;
+        }
+        .visual {
+            position: relative;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.05), rgba(107, 102, 255, 0.05));
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+        .cube {
+            width: 200px;
+            height: 200px;
+            transform-style: preserve-3d;
+            animation: rotate 15s infinite linear;
+            position: relative;
+        }
+        @keyframes rotate {
+            0% { transform: rotateX(0) rotateY(0); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+        .cube-face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(107, 102, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            color: #ff6b6b;
+        }
+        .front { transform: translateZ(100px); }
+        .back { transform: translateZ(-100px) rotateY(180deg); }
+        .right { transform: translateX(100px) rotateY(90deg); }
+        .left { transform: translateX(-100px) rotateY(-90deg); }
+        .top { transform: translateY(-100px) rotateX(90deg); }
+        .bottom { transform: translateY(100px) rotateX(-90deg); }
+        
+        .footer {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .highlight {
+            background: linear-gradient(90deg, #ff6b6b, #6b66ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+        }
+        .status {
+            font-style: italic;
+            color: #a0a0c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div>
+            <h1>ROBLOXのAI革新</h1>
+            <div class="subtitle">次世代メタバース体験の最前線</div>
+        </div>
+        
+        <div class="content">
+            <div class="features">
+                <div class="feature">
+                    <h3>AIアシスタント <span class="year">2023年導入</span></h3>
+                    <p>仮想世界の構築を簡素化するコードとコンテンツ生成をサポート。例えば「古代の遺跡を舞台にしたゲーム」というプロンプトから環境を自動生成。</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>アバター自動設定 <span class="year">2024年導入</span></h3>
+                    <p>3Dボディメッシュを自動的にアニメーション可能なアバターに変換。作成時間を大幅に短縮し、クリエイティブ表現の幅を拡大。</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>テクスチャ生成機 <span class="year">2024年導入</span></h3>
+                    <p>テキストプロンプトに基づいて3Dオブジェクトのテクスチャを自動生成。視覚的な多様性を高め、コンテンツ開発のスピードを向上。</p>
+                </div>
+            </div>
+            
+            <div class="visual">
+                <div class="cube">
+                    <div class="cube-face front">AI</div>
+                    <div class="cube-face back">UX</div>
+                    <div class="cube-face right">3D</div>
+                    <div class="cube-face left">VR</div>
+                    <div class="cube-face top">AR</div>
+                    <div class="cube-face bottom">ML</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="impact">
+                これらのAI機能が<span class="highlight">コンテンツ作成を民主化</span>し、<span class="highlight">ユーザー体験を向上</span>
+            </div>
+            <div class="status">
+                他の新興プラットフォームはまだ確立されておらず、ROBLOXの進化が最も顕著な革新
+            </div>
+        </div>
+    </div>
+</body>
+</html>
