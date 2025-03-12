@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sharecontents リポジトリインデックス</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        header {
+            background-color: #24292e;
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        h2 {
+            font-size: 22px;
+            margin-top: 0;
+            color: #24292e;
+            border-bottom: 2px solid #e1e4e8;
+            padding-bottom: 10px;
+        }
+        .repo-info {
+            margin-top: 12px;
+            font-size: 15px;
+        }
+        .repo-info a {
+            color: #58a6ff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .repo-info a:hover {
+            color: #79c0ff;
+            text-decoration: underline;
+        }
+        .content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .file-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .file-item {
+            padding: 15px;
+            border-bottom: 1px solid #eaecef;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        .file-item:hover {
+            background-color: #f6f8fa;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .file-icon {
+            margin-right: 15px;
+            font-size: 20px;
+            color: #586069;
+            width: 24px;
+            text-align: center;
+        }
+        .file-link {
+            color: #0366d6;
+            text-decoration: none;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .file-link:hover {
+            text-decoration: none;
+        }
+        .file-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #0366d6;
+        }
+        .file-path {
+            font-size: 13px;
+            color: #6a737d;
+        }
+        .file-date {
+            font-size: 12px;
+            color: #6a737d;
+            margin-top: 3px;
+            background-color: #f1f8ff;
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .file-desc {
+            background-color: #eaf5ff;
+            color: #0366d6;
+            font-size: 13px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            color: #586069;
+            padding: 20px 0;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .content {
+                padding: 20px;
+            }
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .file-desc {
+                margin-top: 10px;
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>sharecontents リポジトリインデックス</h1>
+        <div class="repo-info">
+            <a href="https://github.com/suemaru/sharecontents" target="_blank">
+                https://github.com/suemaru/sharecontents
+            </a>
+        </div>
+    </header>
+
+    <div class="content">
+        <h2>HTMLファイル一覧</h2>
+        <ul class="file-list" id="file-list">
+            <!-- JavaScriptがHTMLファイルをここにリストアップします -->
+            <li class="file-item">
+                <span class="file-icon">⏳</span>
+                <div class="file-link" id="loading-placeholder">
+                    <span class="file-title">読み込み中...</span>
+                    <span class="file-path">リポジトリからファイル一覧を取得しています</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <footer>
+        <p>このインデックスは、<a href="https://github.com/suemaru/sharecontents" target="_blank">suemaru/sharecontents</a> リポジトリのHTMLファイルを閲覧するために作成されました。</p>
+    </footer>
+
+    <script>
+        // GitHubのAPIURLを構築
+        const apiUrl = 'https://api.github.com/repos/suemaru/sharecontents/git/trees/main?recursive=1';
+        
+        // GitHubからファイル一覧を取得
+        // ファイル名と日本語タイトルのマッピング
+        const fileTitles = {
+            'manga-service-infographic.html': 'マンガサービスインフォグラフィック',
+            'roblox-ai-slide.html': 'Roblox AI スライド',
+            'SSG_flow_250309.html': 'SSG フロー 250309',
+            'k-beauty-instagram-strategy.html': 'K-Beauty Instagram 戦略',
+            'nft-rwa-infographic.html': 'NFT-RWA インフォグラフィック',
+            'space-syndrome-infographic.html': 'スペースシンドローム インフォグラフィック'
+        };
+
+        // ファイル名から日本語タイトルを自動生成する関数
+        function generateJapaneseTitle(filename) {
+            // 拡張子を削除
+            const nameWithoutExt = filename.replace('.html', '');
+            
+            // 特殊なファイル名のパターンを処理
+            if (nameWithoutExt.startsWith('SSG_flow_')) {
+                return 'SSG フロー ' + nameWithoutExt.substring(9);
+            }
+            
+            // ハイフンやアンダースコアで分割して単語化
+            const words = nameWithoutExt.split(/[-_]/);
+            
+            // 単語ごとに処理
+            const processedWords = words.map(word => {
+                // 既知の略語の変換マップ
+                const abbreviations = {
+                    'nft': 'NFT',
+                    'rwa': 'RWA',
+                    'ai': 'AI',
+                    'ssg': 'SSG'
+                };
+                
+                // 略語チェック（小文字で正規化して確認）
+                const lowerWord = word.toLowerCase();
+                if (abbreviations[lowerWord]) {
+                    return abbreviations[lowerWord];
+                }
+                
+                // infographicの特別処理
+                if (lowerWord === 'infographic') {
+                    return 'インフォグラフィック';
+                }
+                
+                // slide の特別処理
+                if (lowerWord === 'slide') {
+                    return 'スライド';
+                }
+                
+                // service の特別処理
+                if (lowerWord === 'service') {
+                    return 'サービス';
+                }
+                
+                // strategy の特別処理
+                if (lowerWord === 'strategy') {
+                    return '戦略';
+                }
+                
+                // instagram の特別処理
+                if (lowerWord === 'instagram') {
+                    return 'Instagram';
+                }
+                
+                // manga の特別処理
+                if (lowerWord === 'manga') {
+                    return 'マンガ';
+                }
+                
+                // space の特別処理
+                if (lowerWord === 'space') {
+                    return 'スペース';
+                }
+                
+                // syndrome の特別処理
+                if (lowerWord === 'syndrome') {
+                    return 'シンドローム';
+                }
+                
+                // roblox の特別処理
+                if (lowerWord === 'roblox') {
+                    return 'Roblox';
+                }
+                
+                // beauty の特別処理
+                if (lowerWord === 'beauty') {
+                    return 'Beauty';
+                }
+                
+                // k-beauty の特別処理
+                if (lowerWord === 'k') {
+                    return 'K';
+                }
+                
+                // 最初の文字を大文字にする（一般的な処理）
+                return word.charAt(0).toUpperCase() + word.slice(1);
+            });
+            
+            // 単語を結合して日本語タイトルを生成
+            return processedWords.join(' ');
+        }
+
+        // ファイル名の拡張子を削除して表示名を取得する関数
+        function getDisplayName(filename) {
+            // まず既存の固定マッピングをチェック
+            if (fileTitles[filename]) {
+                return fileTitles[filename];
+            }
+            
+            // マッピングがなければ自動生成を試みる
+            return generateJapaneseTitle(filename);
+        }
+
+        async function fetchRepoContents() {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`GitHub API returned ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const fileList = document.getElementById('file-list');
+                
+                // リスト要素をクリア
+                fileList.innerHTML = '';
+                
+                // HTMLファイルだけをフィルタリング
+                const htmlFiles = data.tree.filter(item => 
+                    item.path.endsWith('.html') && item.type === 'blob'
+                );
+                
+                if (htmlFiles.length === 0) {
+                    fileList.innerHTML = '<li class="file-item">HTMLファイルが見つかりませんでした。</li>';
+                    return;
+                }
+                
+                // HTMLファイルをリストに追加
+                htmlFiles.forEach(file => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'file-item';
+                    
+                    // ファイルのURLを作成
+                    const rawUrl = `https://raw.githubusercontent.com/suemaru/sharecontents/main/${file.path}`;
+                    const viewUrl = `https://htmlpreview.github.io/?${rawUrl}`;
+                    
+                    // ファイル名の取得
+                    const fileName = file.path.split('/').pop();
+                    // 日本語表示名の取得
+                    const displayName = getDisplayName(fileName);
+                    
+                    listItem.innerHTML = `
+                        <span class="file-icon">📄</span>
+                        <a href="${viewUrl}" target="_blank" class="file-link" title="${file.path}">
+                            <span class="file-title">${displayName}</span>
+                            <span class="file-path">${file.path}</span>
+                        </a>
+                        <span class="file-desc">HTMLプレビュー</span>
+                    `;
+                    
+                    fileList.appendChild(listItem);
+                });
+                
+            } catch (error) {
+                console.error('リポジトリの内容の取得に失敗しました:', error);
+                document.getElementById('file-list').innerHTML = `
+                    <li class="file-item">
+                        <span class="file-icon">⚠️</span>
+                        <span class="file-link">エラーが発生しました: ${error.message}</span>
+                    </li>
+                `;
+            }
+        }
+        
+        // ページ読み込み時にコンテンツを取得
+        window.onload = fetchRepoContents;
+    </script>
+</body>
+</html>
