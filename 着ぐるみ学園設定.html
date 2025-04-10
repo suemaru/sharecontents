@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>着ぐるみ学園 - 世界観設定</title>
+    <style>
+        /* 全体のスタイル */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --background-color: #f5f6fa;
+            --text-color: #2c3e50;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* ヘッダー */
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* セクション */
+        section {
+            margin-bottom: 3rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+
+        h2 {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            font-size: 1.8rem;
+        }
+
+        .content-box {
+            padding: 2rem;
+        }
+
+        /* 情報アイテム */
+        .info-item {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style-position: inside;
+            margin-left: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 強調テキスト */
+        strong {
+            color: var(--accent-color);
+        }
+
+        /* レスポンシブデザイン */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .content-box {
+                padding: 1rem;
+            }
+
+            .info-item {
+                padding: 1rem;
+            }
+        }
+
+        /* アニメーション */
+        .info-item {
+            transition: transform 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-5px);
+        }
+
+        /* まとめセクション */
+        .summary {
+            background: linear-gradient(135deg, #f6f8fa, #e9ecef);
+        }
+
+        .summary .content-box {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .summary p {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>着ぐるみ学園 - 世界観設定</h1>
+        </header>
+
+        <section class="concept">
+            <h2>1. 基本コンセプト</h2>
+            <div class="content-box">
+                <div class="info-item">
+                    <h3>近未来</h3>
+                    <p>生成AI技術が極度に進歩し、他人の「素顔」や「声」を一度でも取得すれば、ディープフェイクで自由に捏造・拡散できてしまう社会。</p>
+                </div>
+                <div class="info-item">
+                    <h3>素顔を見せることの危険性</h3>
+                    <p>一度でも顔を撮影されると、ありとあらゆる犯罪や社会的な攻撃に利用される可能性が高いため、人々は基本的に「着ぐるみ」を着用して生活する。</p>
+                </div>
+                <div class="info-item">
+                    <h3>世界全体が「着ぐるみ社会」</h3>
+                    <p>街を歩く人も、学校での先生や生徒も、テレビに映る芸能人や政治家もすべて着ぐるみを着ている。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>2. 着ぐるみの特徴</h2>
+            <div class="content-box">
+                <div class="info-item">
+                    <h3>動物モチーフが基本</h3>
+                    <p>着ぐるみは動物型が主流。ライオン、イルカ、ウサギ、クマなど、さまざまな種類がある。</p>
+                </div>
+                <div class="info-item">
+                    <h3>ステータスの象徴</h3>
+                    <ul>
+                        <li><strong>富裕層:</strong> 高性能・高級な着ぐるみを多数所持している。好きな動物をカスタムオーダーで作ることができ、それ自体がステータスとなる。</li>
+                        <li><strong>貧困層:</strong> 量産型の地味な着ぐるみしか買えず、周囲とほぼ同じ見た目になる。そのため個人でデコレーションしたりアクセサリーを付けたりして差別化を図る。</li>
+                        <li><strong>着ぐるみを持てない人:</strong> 外に出ることが困難になり、地下街などでひっそり暮らす場合もある。</li>
+                    </ul>
+                </div>
+                <div class="info-item">
+                    <h3>ボイスチェンジャー機能</h3>
+                    <p>声から本人が特定されないよう、着ぐるみには標準でボイスチェンジャー機能が搭載されている。</p>
+                </div>
+                <div class="info-item">
+                    <h3>IDチップと紐づけ</h3>
+                    <p>着ぐるみにはFeliCaのようなチップが内蔵され、個人の身分証（マイナンバー的なもの）と紐づけられている。着ぐるみが奪われること＝アイデンティティ喪失という重大犯罪につながる。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="face-handling">
+            <h2>3. 素顔の扱い</h2>
+            <div class="content-box">
+                <div class="info-item">
+                    <h3>素顔を見せない生活が当たり前</h3>
+                    <p>家族・恋人でも素顔を見せる人は少なく、見せ合うタイミングは一大イベントやドラマ性を伴う。</p>
+                </div>
+                <div class="info-item">
+                    <h3>ユートピア的な施設</h3>
+                    <ul>
+                        <li>富裕層向けの<strong>高級プライベートクラブ</strong>などで、暗闇の中で一斉に素顔になるという遊びが流行る場合がある。</li>
+                        <li>ただしそこでも、コンタクトレンズ型カメラデバイス等で撮影される危険は常に存在する。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="social-structure">
+            <h2>4. 社会構造・ルール</h2>
+            <div class="content-box">
+                <div class="info-item">
+                    <h3>犯罪と法整備</h3>
+                    <ul>
+                        <li>他人の素顔を撮影・拡散する行為は違法だが、技術が進みすぎており横行している。</li>
+                        <li>撮影されればディープフェイクの作成や身分証偽造が容易になる。</li>
+                    </ul>
+                </div>
+                <div class="info-item">
+                    <h3>政治家・公務員</h3>
+                    <p>公的な場でも着ぐるみ着用は当然。装飾禁止等のルールがあり、家系によって代々同じ動物を着るなどの慣習もあり得る。</p>
+                </div>
+                <div class="info-item">
+                    <h3>学校での生活</h3>
+                    <ul>
+                        <li>教育現場でも先生・生徒ともに着ぐるみが基本。</li>
+                        <li>体育などの着替えは頭（着ぐるみ）を通さずに済むような形状の服が流行るなど、生活スタイルが変化している。</li>
+                        <li>量産型の着ぐるみを着る生徒はデコレーションやアクセサリーで個性を出す。</li>
+                    </ul>
+                </div>
+                <div class="info-item">
+                    <h3>メディア・エンタメ</h3>
+                    <ul>
+                        <li>テレビ・映画・舞台なども原則着ぐるみ姿で出演。</li>
+                        <li>生成AIで完全に架空の人物や映像を作ることも一般化しており、虚実が混在している。</li>
+                    </ul>
+                </div>
+                <div class="info-item">
+                    <h3>SNSやインターネット</h3>
+                    <p>現実のSNSと大きく変わらず、匿名やアバター文化がさらに加速している。アイコンも着ぐるみをベースにしたものが多い。</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="maintenance">
+            <h2>5. 着ぐるみのメンテナンス・管理</h2>
+            <div class="content-box">
+                <div class="info-item">
+                    <h3>修理・クリーニング</h3>
+                    <ul>
+                        <li>個室型コインランドリーのような場所があり、そこで人知れず着ぐるみを洗濯・修理する。</li>
+                        <li>公衆トイレ感覚で利用するが、利用中に素顔を撮られるリスクなども存在。</li>
+                    </ul>
+                </div>
+                <div class="info-item">
+                    <h3>本人確認</h3>
+                    <ul>
+                        <li>着ぐるみのチップ認証で身分証明を行う。</li>
+                        <li>着ぐるみが奪われると本人になりすまして犯罪・詐欺が可能になるため、大きな社会問題。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="others">
+            <h2>6. その他</h2>
+            <div class="content-box">
+                <div class="info-item">
+                    <h3>着ぐるみ同士の識別</h3>
+                    <ul>
+                        <li>MMOゲームのアバターを見分けるように、主に外見や細かなデコレーション、声の特徴（ボイスチェンジャー越しでも微妙なトーンの違い）などで個人を特定する。</li>
+                        <li>ただし他人に興味がなければ「同じような着ぐるみ」にしか見えないことも多く、現実世界でも顔を詳しく覚えないのと同様の感覚。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="summary">
+            <h2>まとめ</h2>
+            <div class="content-box">
+                <p>この世界では、<strong>「素顔を晒すと人生が終わるかもしれない」という危機感</strong>が人々の生活全体を支配しており、<strong>着ぐるみ</strong>が日常生活の標準となっています。</p>
+                <p>しかし、その着ぐるみ自体が<strong>ステータスや個性を示すファッション</strong>として発展し、また<strong>身分証明ともリンクする</strong>ため、それをめぐる<strong>格差や犯罪</strong>が新たな社会問題となっています。</p>
+                <p>学校や仕事、エンタメなどのさまざまな場面でも、着ぐるみで生活することが当たり前になった結果、人々は<strong>かつての"素顔"が担っていたアイデンティティやコミュニケーションの在り方を、着ぐるみやデジタル技術、所作・声の違いなどに求める</strong>ようになっています。</p>
+            </div>
+        </section>
+    </div>
+</body>
+</html> 

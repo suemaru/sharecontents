@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT独自マーケットプレイス開発会社リスト</title>
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --secondary: #10B981;
+            --dark: #1F2937;
+            --light: #F3F4F6;
+            --accent: #F59E0B;
+            --danger: #EF4444;
+            --success: #10B981;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f9fafb;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .sub-header {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+        
+        .intro {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .companies {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .company-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .company-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .company-header {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.2rem;
+            position: relative;
+        }
+        
+        .company-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .company-body {
+            padding: 1.5rem;
+        }
+        
+        .company-content {
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .features {
+            margin-bottom: 1rem;
+        }
+        
+        .match-title {
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .tips {
+            background-color: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 3rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tips h2 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .tip-card {
+            background-color: white;
+            padding: 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tip-title {
+            font-weight: bold;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tip-title::before {
+            content: "";
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            margin-right: 8px;
+            display: inline-block;
+        }
+        
+        .conclusion {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 3rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .conclusion h2 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .companies {
+                grid-template-columns: 1fr;
+            }
+            
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NFT独自マーケットプレイス開発会社</h1>
+            <div class="sub-header">ウォレットレスNFT取引とリアル店舗連携を実現できる企業リスト</div>
+        </header>
+        
+        <section class="intro">
+            <p>以下は、日本国内でブロックチェーン・NFT関連のシステム開発に強みを持ち、ウォレットレスのNFTマーケットプレイス構築にも対応可能と思われる企業の例です。あくまで参考リストであり、実際の依頼時には開発実績や費用感、専門領域・得意分野の確認が必要です。またプロダクト特性上、金融規制やAML/KYCなどの法務要件も絡むため、ブロックチェーンの技術力だけでなく暗号資産交換業者との連携経験やFinTech分野の知見も確認するとよいでしょう。</p>
+        </section>
+        
+        <div class="companies">
+            <!-- 会社1 -->
+            <div class="company-card">
+                <div class="company-header">
+                    <h2>double jump.tokyo株式会社</h2>
+                </div>
+                <div class="company-body">
+                    <div class="company-content">
+                        <div class="feature-title">特徴・強み</div>
+                        <ul class="features">
+                            <li>国内有数のブロックチェーンゲーム開発会社。</li>
+                            <li>有名タイトル「My Crypto Heroes」や「BRAVE FRONTIER HEROES」などNFTゲームを自社開発。</li>
+                            <li>ゲーム要素とNFT連動を熟知しており、ウォレットレスUXやスマートコントラクト開発にも実績。</li>
+                        </ul>
+                    </div>
+                    <div class="company-content">
+                        <div class="match-title">想定する依頼内容へのマッチ度</div>
+                        <ul class="features">
+                            <li>カストディ型、またはユーザーがシームレスにNFTを使えるUI/UX設計経験がある。</li>
+                            <li>ゲーム内アイテムとの連携ノウハウが豊富。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 会社2 -->
+            <div class="company-card">
+                <div class="company-header">
+                    <h2>HashHub株式会社</h2>
+                </div>
+                <div class="company-body">
+                    <div class="company-content">
+                        <div class="feature-title">特徴・強み</div>
+                        <ul class="features">
+                            <li>ブロックチェーンに関するリサーチやコンサルティング、技術開発支援を行う。</li>
+                            <li>自社で「HashHub Research」という専門レポートを出しており、国内外の規制・技術動向に精通。</li>
+                            <li>国内外のWeb3スタートアップや企業向けにスマートコントラクト、ウォレット関連の開発コンサルも実施。</li>
+                        </ul>
+                    </div>
+                    <div class="company-content">
+                        <div class="match-title">想定する依頼内容へのマッチ度</div>
+                        <ul class="features">
+                            <li>プロトタイプ段階からの要件定義や法規制対応のコンサルが必要な場合に強みを発揮。</li>
+                            <li>開発リソースの提供だけでなく、規制対応やトークン設計にも助言可能。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 会社3 -->
+            <div class="company-card">
+                <div class="company-header">
+                    <h2>Chaintope株式会社</h2>
+                </div>
+                <div class="company-body">
+                    <div class="company-content">
+                        <div class="feature-title">特徴・強み</div>
+                        <ul class="features">
+                            <li>福岡拠点のブロックチェーン開発企業。ビジネス向けブロックチェーンソリューションを多数提供。</li>
+                            <li>Ethereum以外にも独自チェーンの構築やL2ソリューションに取り組んできた実績があり、トランザクション最適化なども相談可能。</li>
+                            <li>金融機関・行政との協業事例もあり、法規制や大規模システム連携のノウハウも保有。</li>
+                        </ul>
+                    </div>
+                    <div class="company-content">
+                        <div class="match-title">想定する依頼内容へのマッチ度</div>
+                        <ul class="features">
+                            <li>スケーラビリティ（ガス代・トランザクション詰まりなど）に対するノウハウがあるため、ウォレットレス大規模プラットフォーム構築で期待できる。</li>
+                            <li>行政や地域連携の実績があり、「リアル店舗・地域連動のNFT特典」といった文脈の知見もある可能性。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 会社4 -->
+            <div class="company-card">
+                <div class="company-header">
+                    <h2>HAKUHODO Blockchain Initiative / HAKUHODO KEY3 等</h2>
+                </div>
+                <div class="company-body">
+                    <div class="company-content">
+                        <div class="feature-title">特徴・強み</div>
+                        <ul class="features">
+                            <li>博報堂グループ内におけるブロックチェーン・Web3領域の専門チーム。</li>
+                            <li>マーケティングやブランド戦略の観点からNFT企画を手がける事例があり、エンタメ・広告領域との融合にも強い。</li>
+                            <li>ConsenSysと合弁会社「HAKUHODO KEY3」を設立し、日本企業のNFT・Web3参入サポートを行っている。</li>
+                        </ul>
+                    </div>
+                    <div class="company-content">
+                        <div class="match-title">想定する依頼内容へのマッチ度</div>
+                        <ul class="features">
+                            <li>「ゲーム＋リアル店舗＋マーケティングキャンペーン」など、広告・プロモーションとの連動企画で相乗効果を狙う場合に最適。</li>
+                            <li>単なるシステム開発だけでなく、ブランディングやユーザーコミュニケーション設計まで一気通貫で相談可能。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 会社5 -->
+            <div class="company-card">
+                <div class="company-header">
+                    <h2>NTTデータ、富士通、TISなど大手SIer</h2>
+                </div>
+                <div class="company-body">
+                    <div class="company-content">
+                        <div class="feature-title">特徴・強み</div>
+                        <ul class="features">
+                            <li>金融システムや大規模決済基盤などの豊富な開発実績。</li>
+                            <li>ブロックチェーンR&D部門を社内に持ち、大手企業向けPoCでNFTやデジタル証券のソリューションを手がける事例あり。</li>
+                            <li>規模の大きい案件や法定通貨決済との複雑な連携にも耐える体制と実績がある。</li>
+                        </ul>
+                    </div>
+                    <div class="company-content">
+                        <div class="match-title">想定する依頼内容へのマッチ度</div>
+                        <ul class="features">
+                            <li>ミッションクリティカルな決済システムやKYC/AML管理が求められる場合に、しっかりした体制で取り組める。</li>
+                            <li>コストは比較的高額になりやすいが、信頼性重視や大企業との協業プロジェクトに向いている。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 会社6 -->
+            <div class="company-card">
+                <div class="company-header">
+                    <h2>One of Them株式会社</h2>
+                </div>
+                <div class="company-body">
+                    <div class="company-content">
+                        <div class="feature-title">特徴・強み</div>
+                        <ul class="features">
+                            <li>ゲーム開発スタジオから派生し、ブロックチェーンゲームの開発・運営を支援。</li>
+                            <li>Web3文脈でのユーザー体験デザイン、UI/UX設計も得意。</li>
+                            <li>DeNAや他大手企業との共同でNFTゲームやサービスを開発した例があるとされている。</li>
+                        </ul>
+                    </div>
+                    <div class="company-content">
+                        <div class="match-title">想定する依頼内容へのマッチ度</div>
+                        <ul class="features">
+                            <li>ゲーム内アイテムとしてのNFT活用に特化したUI/UXを要望する場合、豊富な経験が期待できる。</li>
+                            <li>大手ゲーム会社との共同開発実績があれば、安定した品質管理面でもメリットがある。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 会社7 -->
+            <div class="company-card">
+                <div class="company-header">
+                    <h2>グローバル系のブロックチェーン開発受託企業</h2>
+                </div>
+                <div class="company-body">
+                    <div class="company-content">
+                        <div class="feature-title">特徴・強み</div>
+                        <ul class="features">
+                            <li>例: ConsenSys (日本支社), Wizeline (日本対応可能), TechMagic等</li>
+                            <li>グローバル規模でEthereum系の開発支援を行っており、ERC-4337やLayer2など最新の技術にも対応。</li>
+                            <li>英語・海外とのネットワークが強く、海外マーケットやグローバルNFT連携も見据えるなら利点。</li>
+                            <li>日本語サポートが必要か確認必須。</li>
+                        </ul>
+                    </div>
+                    <div class="company-content">
+                        <div class="match-title">想定する依頼内容へのマッチ度</div>
+                        <ul class="features">
+                            <li>大規模・最先端技術を短期間に実装したい場合、英語ベースの海外リソースを活用できる。</li>
+                            <li>日本法務やローカライズのサポート体制が十分かは要確認。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 会社8 -->
+            <div class="company-card">
+                <div class="company-header">
+                    <h2>HashPalette株式会社 / パレット（Palette）関連企業</h2>
+                </div>
+                <div class="company-body">
+                    <div class="company-content">
+                        <div class="feature-title">特徴・強み</div>
+                        <ul class="features">
+                            <li>日本発のブロックチェーン「Palette Chain」を展開し、NFTマーケットプレイス「PLT Place」を運営。</li>
+                            <li>Ethereum互換などを踏まえつつ、独自チェーンでガスコストを抑えたNFT取引を提供中。</li>
+                            <li>国内アニメ・漫画IPとのコラボも多く、コンテンツ連動のノウハウがある。</li>
+                        </ul>
+                    </div>
+                    <div class="company-content">
+                        <div class="match-title">想定する依頼内容へのマッチ度</div>
+                        <ul class="features">
+                            <li>独自チェーン採用や安価なトランザクションを重視するなら、Palette Chainベースも検討余地。</li>
+                            <li>ゲーム＋リアル店舗特典を、Paletteで運用しつつEthereumブリッジも視野に入れる開発が可能。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <section class="tips">
+            <h2>依頼先選びのポイント</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-title">実績・事例</div>
+                    <p>NFTマーケットプレイスやカストディウォレット、ゲーム連携など、実際に似たプロダクトを開発した経験の有無を確認。</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-title">法務・規制対応の知見</div>
+                    <p>暗号資産交換業や資金移動業、景表法などに対してどの程度知識があるか。</p>
+                    <p>必要に応じて提携先の弁護士やコンサルを紹介してもらえる体制か。</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-title">プロジェクト規模感</div>
+                    <p>小規模PoCレベルから大規模商用サービスまで対応可能か。</p>
+                    <p>大手SIerは安定性が高いがコストも大きい、中小/スタートアップは柔軟だが体制リスクもある。</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-title">開発期間・スケジュール</div>
+                    <p>ブロックチェーン実装やKYC連携、運営管理画面の整備など、どの程度の開発期間で納品が可能か。</p>
+                    <p>新技術（ERC-4337など）を使う場合は追加検証の時間も見込む。</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-title">運用・保守</div>
+                    <p>ローンチ後の運用サポート体制。セキュリティアップデートや規制改正対応は不可欠。</p>
+                    <p>ウォレットレス設計におけるユーザー問い合わせ対応（障害時のリカバリなど）を協力してくれるか。</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="conclusion">
+            <h2>まとめ</h2>
+            <p>「ウォレット不要のNFTマーケットプレイス」は国内でも事例が増えており、対応可能な開発会社も多数存在します。</p>
+            <p>ただし、ブロックチェーン技術力だけでなく、金融規制やWebサービス運営ノウハウを兼ね備えた会社に依頼することが成功の鍵になります。</p>
+            <p>特に、日本円決済やカストディアルウォレットの実装には暗号資産交換業登録や資金移動業ライセンスが絡む可能性が高いため、実際には自社or提携先のライセンス保持企業が必要となるケースが少なくありません。</p>
+            <p>依頼時には、上記のような企業の実績・法対応力・開発体制をじっくり比較検討し、要望に合ったベストパートナーを選定するとよいでしょう。</p>
+        </section>
+    </div>
+</body>
+</html>
