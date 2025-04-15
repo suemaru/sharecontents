@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スペースシンドローム - プレースホルダー画像生成ツール</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .controls {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .canvas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .canvas-item {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            background-color: #fff;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .color-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .color-input {
+            flex: 1;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .status {
+            color: #27ae60;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>スペースシンドローム - プレースホルダー画像生成ツール</h1>
+    
+    <div class="controls">
+        <div class="header">
+            <h2>設定</h2>
+            <div class="status" id="status"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="image-type">画像タイプ</label>
+            <select id="image-type">
+                <option value="card">カード画像</option>
+                <option value="back">カード裏面</option>
+                <option value="frame">フレーム</option>
+            </select>
+        </div>
+        
+        <div class="form-group" id="category-container">
+            <label for="category">カテゴリ</label>
+            <select id="category">
+                <option value="explorer">宇宙の探検家</option>
+                <option value="spaceship">宇宙船エンデバー</option>
+                <option value="gravity_device">重力制御装置</option>
+                <option value="planet">惑星アルファ</option>
+                <option value="alien">異星生物オメガ</option>
+            </select>
+        </div>
+        
+        <div class="color-inputs">
+            <div class="color-input">
+                <label for="bg-color">背景色</label>
+                <input type="color" id="bg-color" value="#1a2a3a">
+            </div>
+            <div class="color-input">
+                <label for="fg-color">文字色</label>
+                <input type="color" id="fg-color" value="#ffffff">
+            </div>
+            <div class="color-input">
+                <label for="accent-color">アクセント色</label>
+                <input type="color" id="accent-color" value="#3498db">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="width">幅</label>
+            <input type="number" id="width" value="400" min="100" max="2000">
+        </div>
+        
+        <div class="form-group">
+            <label for="height">高さ</label>
+            <input type="number" id="height" value="560" min="100" max="2000">
+        </div>
+        
+        <button id="generate-btn">プレビュー生成</button>
+        <button id="download-all-btn">すべての画像を生成してダウンロード</button>
+    </div>
+    
+    <div class="canvas-container" id="canvas-container">
+        <div class="canvas-item">
+            <canvas id="canvas" width="400" height="560"></canvas>
+            <button id="download-btn">この画像をダウンロード</button>
+        </div>
+    </div>
+
+    <script src="placeholder_generator.js"></script>
+</body>
+</html> 

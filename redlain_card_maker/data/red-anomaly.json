@@ -1,0 +1,13 @@
+{
+  "title": "赤い異常",
+  "description": "レッドラン宙域で初めて観測された未知の現象。空間の歪みを引き起こし、赤い霧状の姿で現れることが特徴。近づいた船舶や生命体に幻覚や時間感覚の混乱をもたらす。",
+  "type": "存在",
+  "rarity": "エピック",
+  "recordNumber": "No.007",
+  "year": "2028年",
+  "effectText": "このカードが場に出ている間、すべてのプレイヤーは各ターンの開始時にカードを1枚引き、その後ランダムにカードを1枚捨てなければならない。このカードは「消滅」効果の対象にならない。",
+  "flavorText": "「それは宇宙の傷から滲み出る血のようだった」 - 探査船アルテミス 航海日誌最終記録",
+  "backgroundImage": "assets/images/background.jpg",
+  "foregroundImage": "assets/images/foreground.png",
+  "effectType": "lightning"
+} 

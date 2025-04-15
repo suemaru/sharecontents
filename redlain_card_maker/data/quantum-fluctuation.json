@@ -1,0 +1,13 @@
+{
+  "title": "量子変動",
+  "description": "真空エネルギーの瞬間的な揺らぎ現象。量子力学的な不確定性により、一時的に粒子と反粒子が対生成される現象。特定の条件下では、この現象を利用したエネルギー操作が可能になる。",
+  "type": "技術",
+  "rarity": "レア",
+  "recordNumber": "No.042",
+  "year": "2030年",
+  "effectText": "アクション：手札のカード1枚をゲームから除外し、山札の上から5枚を見て、その中の1枚を手札に加える。残りのカードは山札の下に好きな順番で置く。このカードは1ゲームに1度しか使用できない。",
+  "flavorText": "「宇宙の法則さえも、一瞬の隙を見せることがある」 - 量子物理学者 エレナ・クヴァント",
+  "backgroundImage": "assets/images/background.jpg",
+  "foregroundImage": "assets/images/foreground.png",
+  "effectType": "glow"
+} 
