@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スペースシンドローム概要</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            overflow: hidden;
+        }
+        
+        .slide-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 16/9;
+            background-color: #f0f8ff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .slide-content {
+            width: 95%;
+            height: 95%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="white"/><path d="M0,0 L100,100 M0,100 L100,0" stroke="rgba(200,200,200,0.2)" stroke-width="0.5"/></svg>');
+            border-radius: 10px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto 1fr 1fr 1fr auto;
+            gap: 15px;
+            overflow: hidden;
+        }
+        
+        .title {
+            grid-column: 1 / span 3;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            border-left: 5px solid;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section h2::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .section-content {
+            font-size: 14px;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+        
+        .project-overview {
+            grid-column: 1;
+            grid-row: 2;
+            border-left-color: #3498db;
+        }
+        
+        .project-overview h2::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%233498db"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>');
+        }
+        
+        .world-view {
+            grid-column: 2;
+            grid-row: 2;
+            border-left-color: #9b59b6;
+        }
+        
+        .world-view h2::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%239b59b6"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>');
+        }
+        
+        .game-overview {
+            grid-column: 3;
+            grid-row: 2;
+            border-left-color: #e74c3c;
+        }
+        
+        .game-overview h2::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23e74c3c"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>');
+        }
+        
+        .local-benefits {
+            grid-column: 1;
+            grid-row: 3;
+            border-left-color: #27ae60;
+        }
+        
+        .local-benefits h2::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2327ae60"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>');
+        }
+        
+        .video-content {
+            grid-column: 2;
+            grid-row: 3;
+            border-left-color: #f39c12;
+        }
+        
+        .video-content h2::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f39c12"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>');
+        }
+        
+        .realverse {
+            grid-column: 3;
+            grid-row: 3;
+            border-left-color: #16a085;
+        }
+        
+        .realverse h2::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2316a085"><path d="M3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2zm12 4c0 1.66-1.34 3-3 3s-3-1.34-3-3 1.34-3 3-3 3 1.34 3 3zm-9 8c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1H6v-1z"/></svg>');
+        }
+        
+        .business-model {
+            grid-column: 1;
+            grid-row: 4;
+            border-left-color: #2980b9;
+        }
+        
+        .business-model h2::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232980b9"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>');
+        }
+        
+        .implementation {
+            grid-column: 2;
+            grid-row: 4;
+            border-left-color: #c0392b;
+        }
+        
+        .implementation h2::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23c0392b"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm-2 14l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>');
+        }
+        
+        .future {
+            grid-column: 3;
+            grid-row: 4;
+            border-left-color: #8e44ad;
+        }
+        
+        .future h2::before {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238e44ad"><path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.06.5-9 4.76-9 9.95 0 5.52 4.47 10 9.99 10 3.31 0 6.24-1.61 8.06-4.09l-2.6-1.53C16.17 17.98 14.21 19 12 19z"/></svg>');
+        }
+        
+        .footer {
+            grid-column: 1 / span 3;
+            text-align: center;
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+        
+        .icon-box {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .icon-box img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .connections svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        @media only screen and (max-width: 800px) {
+            .slide-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto repeat(8, 1fr) auto;
+                font-size: 12px;
+            }
+            
+            .title {
+                grid-column: 1;
+                font-size: 24px;
+            }
+            
+            .section {
+                grid-column: 1;
+            }
+            
+            .project-overview { grid-row: 2; }
+            .world-view { grid-row: 3; }
+            .game-overview { grid-row: 4; }
+            .local-benefits { grid-row: 5; }
+            .video-content { grid-row: 6; }
+            .realverse { grid-row: 7; }
+            .business-model { grid-row: 8; }
+            .implementation { grid-row: 9; }
+            .future { grid-row: 10; }
+            
+            .footer {
+                grid-column: 1;
+                grid-row: 11;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="slide-container">
+        <div class="slide-content">
+            <div class="title">スペースシンドローム プロジェクト概要</div>
+            
+            <div class="section project-overview">
+                <h2>プロジェクト概要</h2>
+                <div class="section-content">
+                    <p>「地方」に今、コンテンツ旋風を！</p>
+                    <p>地方の課題（過疎化・若者流出・経済停滞）を解決するため、実在する不動産や地域資源を活用した新たな価値創出プロジェクト。</p>
+                    <p>「人流に頼らない」新しい地方創生のあり方を提案。コンテンツの力で地方に新たな経済圏を構築します。</p>
+                </div>
+                <div class="icon-box">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233498db'><path d='M12 2L1 21h22L12 2zm0 4l7.53 13H4.47L12 6z'/></svg>" alt="概要アイコン">
+                </div>
+            </div>
+            
+            <div class="section world-view">
+                <h2>世界観設定</h2>
+                <div class="section-content">
+                    <p>「タイムウォール崩壊」により、過去・未来・想像の存在が現実世界に出現するようになった世界。</p>
+                    <p>αウィルスの影響で、人々の「本性」が第二の自我として現れ、超常的な力を持つ「シンドローマー」に。</p>
+                    <p>現実の地方と仮想空間が融合する独自の世界観を構築しています。</p>
+                </div>
+                <div class="icon-box">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239b59b6'><path d='M12 2c-5.33 4-8 8.27-8 12 0 4.42 3.58 8 8 8s8-3.58 8-8c0-3.73-2.67-8-8-12zm0 18c-3.31 0-6-2.69-6-6 0-1 0-3 6-9 6 6 6 8 6 9 0 3.31-2.69 6-6 6zm-1-9h2v2h-2zm0-5h2v4h-2z'/></svg>" alt="世界観アイコン">
+                </div>
+            </div>
+            
+            <div class="section game-overview">
+                <h2>ゲームコンテンツ</h2>
+                <div class="section-content">
+                    <p><strong>3種類のゲームタイプ：</strong></p>
+                    <p>①<b>カジュアルゲーム</b>：誰でも楽しめる簡単なゲーム</p>
+                    <p>②<b>シミュレーションゲーム</b>：地方の不動産を舞台に街づくり</p>
+                    <p>③<b>RPG形式の攻防戦</b>：獲得した拠点を巡る戦いを繰り広げる</p>
+                    <p>ゲーム内アイテムは取引可能で収益化できる！</p>
+                </div>
+                <div class="icon-box">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e74c3c'><path d='M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zM9 16.5V22h6v-5.5l-3-3-3 3zM16.5 9l-3 3 3 3H22V9h-5.5z'/></svg>" alt="ゲームアイコン">
+                </div>
+            </div>
+            
+            <div class="section local-benefits">
+                <h2>地方へのメリット</h2>
+                <div class="section-content">
+                    <p><strong>定量的効果：</strong></p>
+                    <p>・遊休不動産の新たな収益源創出</p>
+                    <p>・ゲーム内取引による地域への還元</p>
+                    <p>・事業者登録による税収増加</p>
+                    <p><strong>定性的効果：</strong></p>
+                    <p>・地方に対するイメージ改善</p>
+                    <p>・目的意識を持つ定住人口の増加</p>
+                </div>
+                <div class="icon-box">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2327ae60'><path d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/></svg>" alt="地方メリットアイコン">
+                </div>
+            </div>
+            
+            <div class="section video-content">
+                <h2>動画コンテンツ</h2>
+                <div class="section-content">
+                    <p><strong>3種類の動画タイプ：</strong></p>
+                    <p>①<b>地域密着型</b>：地域住民と協力して制作する劇化コンテンツ</p>
+                    <p>②<b>世界観展開型</b>：ゲームの世界観を広げる企画物</p>
+                    <p>③<b>OTT向け大型作品</b>：人気ストーリーの単独企画</p>
+                    <p>地域のストーリーを魅力的に伝え、新たなファン層を創出！</p>
+                </div>
+                <div class="icon-box">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f39c12'><path d='M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12zM12 5.5v9l6-4.5z'/></svg>" alt="動画アイコン">
+                </div>
+            </div>
+            
+            <div class="section realverse">
+                <h2>リアルバース構想</h2>
+                <div class="section-content">
+                    <p>実世界と仮想世界を融合させた新しい経済圏「リアルバース」を構築。</p>
+                    <p>地方の不動産を拠点に、コンテンツを介して現実と仮想をつなぐプラットフォームを展開。</p>
+                    <p>「人流」ではなく「人輪」に頼る新しいパラダイムを創造します。</p>
+                </div>
+                <div class="icon-box">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2316a085'><path d='M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z'/></svg>" alt="リアルバースアイコン">
+                </div>
+            </div>
+            
+            <div class="section business-model">
+                <h2>ビジネスモデル</h2>
+                <div class="section-content">
+                    <p><strong>主な収益源：</strong></p>
+                    <p>・ゲーム内アイテム取引手数料</p>
+                    <p>・NFTとしてのアイテム上場収益</p>
+                    <p>・「特化マーケティング」機能による出店料</p>
+                    <p>・動画コンテンツからの広告・配信収入</p>
+                    <p>・リアル店舗との連携収益</p>
+                </div>
+                <div class="icon-box">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232980b9'><path d='M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z'/></svg>" alt="ビジネスアイコン">
+                </div>
+            </div>
+            
+            <div class="section implementation">
+                <h2>実装ステップ</h2>
+                <div class="section-content">
+                    <p><strong>プロジェクト展開：</strong></p>
+                    <p>①<b>0〜6ヶ月</b>：企画・計画、世界観構築、組織形成</p>
+                    <p>②<b>6〜12ヶ月</b>：不動産確保、拠点化、開発開始</p>
+                    <p>③<b>12ヶ月〜</b>：サービス開始、マーケティング強化</p>
+                    <p>地方自治体と連携しながら段階的に拡大</p>
+                </div>
+                <div class="icon-box">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23c0392b'><path d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/></svg>" alt="実装アイコン">
+                </div>
+            </div>
+            
+            <div class="section future">
+                <h2>将来展望</h2>
+                <div class="section-content">
+                    <p>・全国の地方へプロジェクト拡大</p>
+                    <p>・オープン型ビジネスプラットフォーム化</p>
+                    <p>・地方発コンテンツIPの輸出</p>
+                    <p>・新しい地方創生のモデルケース確立</p>
+                    <p>・世界規模でのリアルバース展開</p>
+                </div>
+                <div class="icon-box">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238e44ad'><path d='M12 6V9L16 5L12 1V4C7.58 4 4 7.58 4 12C4 13.57 4.46 15.03 5.24 16.26L6.7 14.8C6.25 13.97 6 13.01 6 12C6 8.69 8.69 6 12 6ZM18.76 7.74L17.3 9.2C17.74 10.04 18 10.99 18 12C18 15.31 15.31 18 12 18V15L8 19L12 23V20C16.42 20 20 16.42 20 12C20 10.43 19.54 8.97 18.76 7.74Z'/></svg>" alt="将来アイコン">
+                </div>
+            </div>
+            
+            <div class="footer">© 2024 SPACEWA Inc. - スペースシンドロームプロジェクト</div>
+        </div>
+    </div>
+</body>
+</html> 
