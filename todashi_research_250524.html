@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戸田市の課題解決ダッシュボード</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .nav-item {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .nav-item.active, .nav-item:hover {
+            border-bottom-color: #0284c7; /* sky-600 */
+            color: #0369a1; /* sky-700 */
+        }
+        .tab-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb; /* gray-200 */
+            border-bottom: none;
+            border-radius: 0.375rem 0.375rem 0 0;
+            cursor: pointer;
+            background-color: #f3f4f6; /* gray-100 */
+            margin-right: 0.25rem;
+            transition: background-color 0.3s ease;
+        }
+        .tab-button.active, .tab-button:hover {
+            background-color: #ffffff; /* white */
+            border-color: #d1d5db; /* gray-300 */
+            border-bottom-color: #ffffff;
+            position: relative;
+            top: 1px;
+        }
+        .accordion-header {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            background-color: #f9fafb; /* gray-50 */
+            border: 1px solid #e5e7eb; /* gray-200 */
+            border-radius: 0.375rem;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-header:hover {
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        .accordion-content {
+            display: none;
+            padding: 1rem;
+            border: 1px solid #e5e7eb; /* gray-200 */
+            border-top: none;
+            border-radius: 0 0 0.375rem 0.375rem;
+        }
+        .section-intro {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #e0f2fe; /* sky-100 */
+            border-left: 4px solid #0ea5e9; /* sky-500 */
+            color: #0c4a6e; /* sky-800 */
+            border-radius: 0.25rem;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-gray-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-bold text-sky-700">戸田市の未来デザイン</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a class="nav-item active" data-target="home">ホーム</a>
+                        <a class="nav-item" data-target="profile">戸田市の姿</a>
+                        <a class="nav-item" data-target="challenges">主要な課題</a>
+                        <a class="nav-item" data-target="interconnectedness">課題のつながり</a>
+                        <a class="nav-item" data-target="proposals">未来への提案</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-sky-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
+            <a class="block nav-item text-center" data-target="home">ホーム</a>
+            <a class="block nav-item text-center" data-target="profile">戸田市の姿</a>
+            <a class="block nav-item text-center" data-target="challenges">主要な課題</a>
+            <a class="block nav-item text-center" data-target="interconnectedness">課題のつながり</a>
+            <a class="block nav-item text-center" data-target="proposals">未来への提案</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <section id="home" class="content-section">
+            <div class="section-intro">
+                <h2 class="text-2xl font-semibold text-sky-700 mb-2">ようこそ！戸田市の課題解決ダッシュボードへ</h2>
+                <p>このダッシュボードは、埼玉県戸田市が直面する様々な課題を明らかにし、その背景にあるデータや分析を分かりやすく提示することを目的としています。市民、行政関係者、そして戸田市の未来に関心を持つすべての方々が、現状を理解し、より良いまちづくりに向けた議論や行動を始めるための一助となることを目指しています。</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow mb-6">
+                <h3 class="text-xl font-semibold text-sky-700 mb-4">戸田市のキーデータ (2025年5月現在)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-sky-50 p-4 rounded-lg shadow">
+                        <h4 class="font-semibold text-sky-600">総人口</h4>
+                        <p class="text-2xl font-bold">142,397 人</p>
+                    </div>
+                    <div class="bg-teal-50 p-4 rounded-lg shadow">
+                        <h4 class="font-semibold text-teal-600">人口密度</h4>
+                        <p class="text-2xl font-bold">7,746 人/km²</p>
+                        <span class="text-sm text-gray-600">(可住地面積あたり)</span>
+                    </div>
+                    <div class="bg-amber-50 p-4 rounded-lg shadow">
+                        <h4 class="font-semibold text-amber-600">平均年齢</h4>
+                        <p class="text-2xl font-bold">41.4 歳</p>
+                        <span class="text-sm text-gray-600">(県内25年連続1位の若さ)</span>
+                    </div>
+                    <div class="bg-lime-50 p-4 rounded-lg shadow">
+                        <h4 class="font-semibold text-lime-600">外国人住民比率</h4>
+                        <p class="text-2xl font-bold">約 5.1%</p>
+                        <span class="text-sm text-gray-600">(8,107人)</span>
+                    </div>
+                    <div class="bg-violet-50 p-4 rounded-lg shadow">
+                        <h4 class="font-semibold text-violet-600">財政力指数</h4>
+                        <p class="text-2xl font-bold">1.19</p>
+                        <span class="text-sm text-gray-600">(全国815市区中11位)</span>
+                    </div>
+                    <div class="bg-pink-50 p-4 rounded-lg shadow">
+                        <h4 class="font-semibold text-pink-600">20年未満居住者</h4>
+                        <p class="text-2xl font-bold">約 81.6%</p>
+                        <span class="text-sm text-gray-600">(高い住民流動性)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <p class="text-lg">戸田市は、都心へのアクセスの良さから人口が増加し続ける活気ある都市ですが、その成長に伴い、コミュニティ形成、子育て支援、高齢化への備え、交通インフラ、防災、経済振興、多文化共生など、多岐にわたる課題も抱えています。このダッシュボードを通じて、これらの課題を多角的に探求していきましょう。</p>
+            </div>
+        </section>
+
+        <section id="profile" class="content-section hidden">
+            <div class="section-intro">
+                <h2 class="text-2xl font-semibold text-sky-700 mb-2">戸田市の姿：人口動態と経済プロファイル</h2>
+                <p>このセクションでは、戸田市の基本的な人口構成、経済状況、そしてその特徴について概観します。これらのデータは、市が直面する課題の背景を理解する上で重要な基盤となります。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-700 mb-4">人口動態</h3>
+                    <p class="mb-4">戸田市は全国的な人口減少傾向とは対照的に、持続的な人口増加を経験しています。特に若い世代の流入が多く、「ベッドタウン」としての特性が顕著です。これは市に活力をもたらす一方で、住民の定着率の低さやコミュニティ形成の難しさといった課題にもつながっています。</p>
+                    <div class="chart-container mb-6">
+                        <canvas id="populationAgeChart"></canvas>
+                    </div>
+                    <div class="chart-container mb-6">
+                        <canvas id="foreignResidentsChart"></canvas>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="font-semibold">特徴的な傾向：</h4>
+                        <ul class="list-disc list-inside ml-4 space-y-1 text-gray-700">
+                            <li><strong>高い人口密度：</strong>コンパクトな市域に多くの住民が暮らしています。</li>
+                            <li><strong>若い平均年齢：</strong>生産年齢人口の割合が高いです。</li>
+                            <li><strong>高い住民流動性：</strong>「若年層の転出入が多いベッドタウン」であり、長期居住者が少ない傾向にあります。</li>
+                            <li><strong>外国人住民の増加：</strong>特に中国人、ベトナム人住民が増加しており、多文化共生の重要性が高まっています。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-sky-700 mb-4">経済プロファイル</h3>
+                    <p class="mb-4">戸田市は堅調な財政力を有しており、多様な産業が集積しています。歴史的には製造業や物流業が中心でしたが、近年は情報技術関連やサービス業へのシフトも見られます。地域経済の多くを中小企業が支えています。</p>
+                    <div class="space-y-3 text-gray-700">
+                        <p><strong>産業構造：</strong> 製造業、倉庫業、物流業に加え、情報技術やサービス部門が成長。中小企業が経済の主体。</p>
+                        <p><strong>雇用：</strong> 全体的に高い雇用率を維持。女性の就業率も高い水準です。昼間人口は夜間人口よりやや少ない典型的なベッドタウンの様相も呈しつつ、市内での雇用も一定数存在します。</p>
+                        <p><strong>財政力：</strong> 財政力指数は1.19と高く、地方交付税に依存しない健全な財政運営が行われています。これにより、市独自の政策展開や課題解決への投資が可能です。</p>
+                    </div>
+                     <div class="chart-container mt-6">
+                        <canvas id="smeDxChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="challenges" class="content-section hidden">
+            <div class="section-intro">
+                <h2 class="text-2xl font-semibold text-sky-700 mb-2">戸田市の主要な課題</h2>
+                <p>戸田市は多くの魅力を持つ一方で、解決すべき様々な課題に直面しています。このセクションでは、報告書で特定された主要な課題をテーマ別に掘り下げ、現状のデータ、背景にある分析、そしてウェブサービスによる解決の可能性を探ります。</p>
+            </div>
+
+            <div id="challenge-tabs" class="mb-4 flex flex-wrap">
+                <button class="tab-button active" data-challenge="socialCohesion">社会的結束</button>
+                <button class="tab-button" data-challenge="childRearing">子育て・教育</button>
+                <button class="tab-button" data-challenge="agingPopulation">高齢化と福祉</button>
+                <button class="tab-button" data-challenge="transportation">交通</button>
+                <button class="tab-button" data-challenge="disasterPrevention">防災・環境</button>
+                <button class="tab-button" data-challenge="economicRevitalization">経済活性化</button>
+                <button class="tab-button" data-challenge="multiculturalism">多文化共生</button>
+                <button class="tab-button" data-challenge="civicParticipation">市民参加・情報伝達</button>
+            </div>
+
+            <div id="challenge-content-area" class="bg-white p-6 rounded-lg shadow">
+                </div>
+        </section>
+
+        <section id="interconnectedness" class="content-section hidden">
+             <div class="section-intro">
+                <h2 class="text-2xl font-semibold text-sky-700 mb-2">課題のつながり：システム的視点</h2>
+                <p>戸田市が抱える課題は、それぞれ独立しているわけではなく、相互に複雑に絡み合っています。このセクションでは、主要な課題間の関連性をシステム的な視点から考察し、一部分の解決が他の部分にどのような影響を与えうるのかを理解することを目指します。</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">A. 一時性、コミュニティ、市民生活</h3>
+                    <p class="text-gray-700">戸田市の高い人口流動性（「ベッドタウン」特性）は、地域コミュニティへの帰属意識の希薄化を招きがちです。これが町内会・自治会への参加率低下や、災害時の「共助」意識の醸成の難しさに繋がっています。住民の一時的な滞在志向は、子育て支援ネットワークや高齢者見守りといった地域相互扶助の基盤を弱める可能性も指摘されています。</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">B. 人口増加、インフラ、サービス需要</h3>
+                    <p class="text-gray-700">継続的な人口増加は、保育施設や学校の不足、交通インフラの混雑、公園など環境資源への需要増大といった形で、既存の都市インフラや公共サービスに大きな負荷をかけています。これらの問題への対症療法的な対応だけでは持続可能ではなく、各部門間の連携を考慮した統合的な都市計画が求められます。</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">C. 経済的活力と社会的幸福</h3>
+                    <p class="text-gray-700">地域経済の主役である中小企業が直面する人手不足やデジタル化の遅れといった課題は、市全体の経済活力に影響します。安定した雇用機会の確保は、住民の生活基盤を支え、家族の安定（子育てや介護問題とも関連）や住民満足度向上に不可欠です。魅力的な地域経済は、住民の定住意欲を高め、地域への投資感を育む効果も期待できます。</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">D. 情報格差とサービス利用</h3>
+                    <p class="text-gray-700">行政からの情報伝達が必ずしも全ての住民に届いていない、あるいは理解されていない現状は、様々なサービスの利用率低下に繋がっています。例えば、ひとり親家庭支援、外国人住民向けサポート、健康増進プログラムなどが、その存在や利用方法を知られていないために十分に活用されていない可能性があります。サービス提供だけでなく、効果的な広報と情報アクセシビリティの確保が、課題解決の鍵となります。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="proposals" class="content-section hidden">
+            <div class="section-intro">
+                <h2 class="text-2xl font-semibold text-sky-700 mb-2">未来への提案：ウェブサービスによる可能性</h2>
+                <p>戸田市が直面する課題に対し、個人開発者でも貢献できるウェブベースのサービスにはどのような可能性があるでしょうか。このセクションでは、報告書で示唆された介入分野をまとめ、具体的なアイデアのヒントを提示します。</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">A. コミュニティ接続と情報アクセスの強化</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1 text-gray-700">
+                        <li>新規住民向けの地域情報ポータル、オンボーディング支援</li>
+                        <li>趣味や関心事に基づく地域グループのマッチングプラットフォーム</li>
+                        <li>スキルシェア、地域イベント発見・参加促進サービス</li>
+                        <li>パーソナライズ可能な地域情報ダッシュボード</li>
+                        <li>多言語対応の生活情報・行政サービス案内ポータル</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">B. 市民サービスと支援へのアクセス合理化</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1 text-gray-700">
+                        <li>一時保育の空き状況確認・予約システムの簡素化</li>
+                        <li>道路の損傷、公園の不具合、安全上の懸念などを手軽に報告できるシステム</li>
+                        <li>高齢者向け支援、ひとり親家庭向け支援など、複雑な制度の分かりやすいナビゲーター</li>
+                        <li>地域資源（小児科、公共施設等）のマップベース検索・レビュー機能</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">C. 市民参加と準備態勢の促進</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1 text-gray-700">
+                        <li>ゲーム感覚で学べる防災計画ツール、家族の防災準備支援</li>
+                        <li>地域のニーズに応じたボランティアマッチングプラットフォーム</li>
+                        <li>地元企業間の連携促進、リソース共有、DX化支援情報集約サイト</li>
+                        <li>市民からの意見収集、パブリックコメント参加を容易にするツール</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold text-sky-600 mb-2">D. 健康と福祉の促進</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1 text-gray-700">
+                        <li>健康的なライフスタイル（食事、運動）を支援する情報提供・記録ツール</li>
+                        <li>地域の健康資源（運動施設、検診情報、健康相談窓口）の検索・予約システム</li>
+                        <li>健康増進イベントやコミュニティ活動への参加促進</li>
+                        <li>メンタルヘルスケアに関する情報提供、相談窓口案内</li>
+                    </ul>
+                </div>
+                 <p class="mt-6 text-gray-700">これらの提案はあくまで出発点です。戸田市の具体的な状況や住民のニーズをさらに深く掘り下げることで、より効果的でユニークなウェブサービスが生まれる可能性があります。</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-300 text-center p-4 mt-8">
+        <p>&copy; 2025 suemaru</p>
+    </footer>
+
+<script>
+    const navItems = document.querySelectorAll('.nav-item');
+    const contentSections = document.querySelectorAll('.content-section');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    const challengeTabsContainer = document.getElementById('challenge-tabs');
+    const challengeContentArea = document.getElementById('challenge-content-area');
+
+    const challengesData = {
+        socialCohesion: {
+            title: "A. 希薄な社会的結束とコミュニティエンゲージメント",
+            summary: "戸田市が直面する主要な課題の一つは、住民間の強固な社会的つながりと深いコミュニティへの関与を育むことの著しい困難さです。これは主に、若い人口の高い流動性を特徴とする「ベッドタウン」としての性格に起因しています。",
+            evidence: [
+                "長期居住者の割合が非常に低い（出生以来9.09%、20年以上18.38%）。",
+                "町内会・自治会への参加率が低下（2021年52.6%、15年間で17ポイント減）。",
+                "地域SNS「ジモティー」で友人探しや孤独感解消を求める投稿多数（特に新規住民）。",
+                "30～40歳代のコミュニティ活動参加率が低い（東京首都圏平均比較）。"
+            ],
+            analysisTitle: "「ジモティーパラドックス」：オフラインのつながりを求めるデジタルの訴えが、より深い社会的ギャップを反映",
+            analysisContent: "ジモティーでの活発なオフライン活動仲間探しの投稿は、既存の伝統的なオフラインでのつながり形成手段が不十分、アクセス困難、またはニーズに合致していないことを示唆しています。これは、若く流動的な人口と公式コミュニティ組織への関与低下という背景の中で起きており、よりカスタマイズされた関心ベースの社会的グループへの欲求を意味します。この状況は、新規住民が地域のネットワークに入り込みにくい、既存のコミュニティ形成メカニズムと住民ニーズの不一致という構造的課題の表れであり、ウェブサービスによる体系的な地域内マッチングやオンボーディング支援の機会を示しています。",
+            webServiceIdeas: [
+                "新規住民向け地域情報・交流支援プラットフォーム。",
+                "共通の関心に基づくローカルグループ形成・運営支援ツール。",
+                "柔軟なコミットメントで参加できる地域活動のマッチング。"
+            ]
+        },
+        childRearing: {
+            title: "B. 子育て支援と教育環境",
+            summary: "戸田市は、特に保育を中心とした包括的な子育て支援サービスへの需要増と、増加する若い人口に対応するための適切かつ質の高い教育施設の確保という、持続的な圧力に直面しています。",
+            evidence: [
+                "保育サービスへの一貫して高い需要（待機児童ゼロ達成も「隠れ待機児童」の存在）。",
+                "小中学校での教室不足（特に駅周辺や大規模マンション建設地区）。",
+                "一時保育の利用手続きの煩雑さ（平日対面登録、試行保育必須など）。",
+                "地域によるサービス格差（例：笹目地区の小児科医不足）。",
+                "ひとり親世帯支援の課題（支援サービス利用率の低さ、就労支援の困難）。"
+            ],
+            analysisTitle: "保育定員確保の成功の裏にある、より深いアクセシビリティ、柔軟性、支援のニュアンス",
+            analysisContent: "「待機児童ゼロ」達成は重要ですが、「隠れ待機児童」問題、一時保育の利用しづらさ、特定地域での関連医療施設不足は、保育ニーズの全体像や実際のアクセスの容易さを統計だけでは捉えきれていないことを示します。課題の焦点は、保育の量から、多様なニーズに応えるための質、利便性、柔軟性、そして関連リソースの公平な地理的分布へと移っています。ウェブサービスは、一時保育の空き情報透明化、オンライン手続きの合理化、子供関連サービスの包括的ディレクトリ提供、親同士の情報共有プラットフォーム創設などで貢献できる可能性があります。",
+            webServiceIdeas: [
+                "リアルタイム一時保育空き情報・オンライン予約/問い合わせシステム。",
+                "地域の子育て関連施設・サービスのマップベース検索・レビュー機能。",
+                "親同士の保育情報共有・協力支援プラットフォーム。"
+            ]
+        },
+        agingPopulation: {
+            title: "C. 高齢化する人口のための健康と福祉",
+            summary: "戸田市は現在、人口構成が若年層に偏っているものの、住民の健康寿命と医療アクセスに関する既存の懸念に対処すると同時に、予測される高齢者人口の急増に備えるという二重の課題に直面しています。",
+            evidence: [
+                "男女ともに健康寿命が県平均より低い。",
+                "国保加入の前期高齢者の一人当たり医療費が県内最高額。",
+                "将来の高齢者人口急増と介護ニーズ増大の予測。",
+                "主要保健センターへのアクセス懸念（行政再編後）。",
+                "高齢者福祉サービス・施設の拡充ニーズ。",
+                "現役世代の健康増進活動への参加率が低い。"
+            ],
+            analysisTitle: "「健康寿命ギャップ」：若い都市にとっての迫り来る課題",
+            analysisContent: "若い市でありながら健康寿命が低く、前期高齢者の医療費が高いという状況は、生活習慣や予防医療アクセスなど年齢以外の要因が健康に影響している可能性を示唆します。将来の高齢者急増と相まって、医療・福祉制度への負担増大が懸念されます。現役世代の健康増進プログラムへの参加率の低さも将来の健康問題を悪化させる要因です。ウェブサービスは、パーソナライズされた健康コーチング、ゲーム化された健康チャレンジ、地域健康資源ポータル、健康指標追跡ツール、健康関連グループのマッチングなどで、全年齢層の健康増進に貢献できます。",
+            webServiceIdeas: [
+                "パーソナライズ健康・ウェルネスコーチングプラットフォーム（AI活用も）。",
+                "ゲーム要素を取り入れた健康増進チャレンジ・インセンティブプログラム。",
+                "地域の健康資源・予防接種情報ポータル。"
+            ]
+        },
+        transportation: {
+            title: "D. 交通とモビリティ",
+            summary: "戸田市は、全住民にとって安全で効率的、かつアクセスしやすいモビリティを確保するという課題に直面しており、特に多数の自転車利用者の安全、公共交通サービスの信頼性と到達範囲、そして自家用車への過度の依存を戦略的に削減することに注意を払う必要があります。",
+            evidence: [
+                "自転車依存度が高いが、逆走など安全上の問題やインフラ・教育の必要性。",
+                "バスの増便・定時性改善要望、バス停認知度の低さ。",
+                "コミュニティバス「toco」の路線長すぎ問題。",
+                "鉄道駅の多モード交通ハブ機能強化の必要性。",
+                "一部地域での交通渋滞。",
+                "公共交通空白地帯の存在（笹目地区、新曽地区一部）。"
+            ],
+            analysisTitle: "自転車への依存とインフラ・行動・情報の乖離",
+            analysisContent: "自転車利用率の高さは肯定的ですが、安全な利用のためにはインフラ、利用者行動、情報の整合性が必要です。「逆走」などの問題は、これらのいずれかの機能不全を示唆します。市の「自転車都市」推進には、物理的レーン整備に加え、公教育、標識改善、安全文化醸成、インフラレビューといった包括的アプローチが不可欠です。ウェブサービスは、危険箇所報告可能なインタラクティブマップ、安全ルール教育コンテンツ、サイクリンググループ支援、安全ルートプランナーなどで貢献できます。",
+            webServiceIdeas: [
+                "自転車危険箇所報告・共有マップ、安全ルートプランナー。",
+                "地域の交通ルール・マナー学習コンテンツ。",
+                "公共交通（バス等）のリアルタイム運行情報、乗り換え案内。"
+            ]
+        },
+         disasterPrevention: {
+            title: "E. 防災と環境安全",
+            summary: "戸田市は、低地という地形と荒川への近接性から、洪水被害の高い固有リスクに直面しています。この物理的脆弱性をさらに悪化させているのが、災害時における市民の意識、準備レベル、そして自助・共助能力を大幅に向上させる必要性です。",
+            evidence: [
+                "荒川堤防決壊やゲリラ豪雨による広範囲浸水リスクが高い（地下貯留施設等で対策中）。",
+                "「自助」「共助」の意識と実践が不十分。",
+                "防災訓練の参加型への移行ニーズ。",
+                "大規模公園や広大な自然緑地の不足。"
+            ],
+            analysisTitle: "防災における「意識と行動のギャップ」",
+            analysisContent: "市は洪水リスク情報を発信していますが、市民の積極的な準備行動（自助・共助）は遅れています。情報提供だけでは行動変容に不十分で、特に流動性の高い人口構成では新規住民への浸透が課題です。より魅力的で参加型、コミュニティ中心のアプローチが求められます。ウェブサービスは、防災学習のゲーム化、超地域的相互扶助グループ形成支援、パーソナライズされた避難計画提供、リアルタイム地域情報共有プラットフォーム、ボランティアマッチングなどで貢献できます。",
+            webServiceIdeas: [
+                "ゲーム性を取り入れた防災学習・準備支援ツール。",
+                "地域住民間の災害時相互支援ネットワーク構築プラットフォーム。",
+                "パーソナライズ避難計画作成支援、リアルタイム災害情報共有。"
+            ]
+        },
+        economicRevitalization: {
+            title: "F. 経済活性化と地元企業支援",
+            summary: "戸田市は、主に中小企業（SME）から成る地元経済の支援、イノベーションに適した環境の育成、そして構造的な経済変化、新型コロナウイルス感染症パンデミックのような外部圧力、デジタル化の必要性といった状況の中で、活気に満ちた強靭な地域経済を確保するという継続的な課題に直面しています。",
+            evidence: [
+                "中小企業の人手不足、事業承継問題、デジタル化の遅れ（PC導入80%に対しメール70%、業務ソフト25%）。",
+                "事業所総数は減少傾向（従業員数は増加）。",
+                "企業誘致・流出防止の必要性（地価の高さが課題）。",
+                "「戸田市経済戦略プラン」による地元企業支援、人材育成、地域連携強化。"
+            ],
+            analysisTitle: "中小企業のデジタルデバイドが経済的レジリエンスと成長の障壁に",
+            analysisContent: "中小企業のデジタル化の遅れは、生産性、競争力、市場リーチ、レジリエンスを損ないます。PC導入率は高いものの、メールや業務ソフトの利用率は低く、DX推進が不可欠です。このギャップは成長を妨げ、経済ショックへの脆弱性を高めます。課題は技術アクセスだけでなく、スキル不足、利点認識の欠如、コスト懸念も含まれます。ウェブサービスは、地元IT専門家とのマッチング、成功事例紹介、SME向けツールディレクトリ、ピアサポートフォーラム、自己診断ツール、補助金情報集約などで貢献できます。",
+            webServiceIdeas: [
+                "地元中小企業向けDX支援ポータル（専門家マッチング、ツール紹介）。",
+                "地域店舗・サービス検索・応援プラットフォーム。",
+                "起業家・フリーランス向けコワーキングスペース情報、ネットワーキング支援。"
+            ]
+        },
+        multiculturalism: {
+            title: "G. 多文化共生と外国人支援",
+            summary: "戸田市は、急速に増加し多様化する外国人住民の円滑な社会的・市民的統合を確保するという課題を負っています。これには、言語の壁への対処、日本人住民と非日本人住民との間の相互文化理解の促進、そして情報と必須サービスへの公平なアクセスの確保が含まれます。",
+            evidence: [
+                "地域ルール・社会規範（ゴミ出し、騒音等）の外国人住民への伝達課題。",
+                "一部日本人住民の外国人への懸念や地域活動参加への抵抗感。",
+                "外国人住民からの多言語情報（特に市公式サイト・アプリ経由）への強い需要。",
+                "戸田市国際交流協会（TIFA）の認知度の低さ。",
+                "日本語学習機会、母語でのコミュニケーション支援の継続的ニーズ。",
+                "税金、入管、社会保険、医療、教育、防災等の具体的情報ニーズ。"
+            ],
+            analysisTitle: "多文化共生における主要なボトルネックとしての情報アクセシビリティ",
+            analysisContent: "外国人住民は主にネットや同胞から情報を得ており、市からの多言語情報、特にデジタルチャネルでの発信を求めています。市の公式情報チャネルは利用されているものの、より良いアクセシビリティへの需要は、現在の提供がニーズを完全に満たしていないことを示唆します。TIFAの認知度の低さも課題です。単なる翻訳だけでなく、好まれるチャネルで、理解しやすく実行可能な形で情報を発信することが重要です。ウェブサービスは、多言語情報ポータル、Q&Aフォーラム、支援サービスディレクトリ、文化オリエンテーションガイド、市の公式発表との連携などで貢献できます。",
+            webServiceIdeas: [
+                "多言語対応の生活情報・行政手続き案内ポータル/アプリ。",
+                "外国人住民と日本人住民の文化交流・相互理解促進イベント情報。",
+                "日本語学習支援リソース、翻訳・通訳ボランティアマッチング。"
+            ]
+        },
+        civicParticipation: {
+            title: "H. 市民参加と情報伝達",
+            summary: "市民が十分に情報を得て、地方自治や地域生活に積極的に参加できるようにすることが課題です。",
+            evidence: [
+                "市は公式サイト、広報誌、SNS等で情報発信しているが、バス停を知らない住民やTIFA認知度の低さなど情報伝達にギャップ。",
+                "市民意識調査やパブコメ実施などエンゲージメントへの取り組みはある。",
+                "防災準備へのより積極的な関与の必要性。",
+                "特に30～40歳代の地域活動への参加が課題。"
+            ],
+            analysisTitle: "「情報過多 vs. 実用的な知識」のジレンマ",
+            analysisContent: "市は多チャネルで情報発信していますが、情報の取り込み、関連性、行動への転換が課題です。住民は情報に圧倒されているか、情報がパーソナルで動機付けになる形で提示されていない可能性があります。ベッドタウン特性と高い人口流動性は、新規住民への情報浸透を難しくします。30-40代の低参加率は、伝統的な参加方法や情報チャネルが彼らのライフスタイルに合致していない可能性を示唆します。ウェブサービスは、パーソナライズ情報ダッシュボード、インタラクティブ学習ツール、明確な行動喚起、フィードバックループ、新規住民ポータルなどで貢献できます。",
+            webServiceIdeas: [
+                "パーソナライズ可能な市政情報ダッシュボード。",
+                "市民提案・意見投稿プラットフォーム、オンライン討議フォーラム。",
+                "地域課題解決のためのアイデアソン・ハッカソン情報、参加支援。"
+            ]
+        }
+    };
+
+    function navigateTo(targetId) {
+        contentSections.forEach(section => {
+            section.classList.add('hidden');
+        });
+        document.getElementById(targetId).classList.remove('hidden');
+
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.dataset.target === targetId) {
+                item.classList.add('active');
+            }
+        });
+        // For mobile menu items
+        const mobileNavItems = mobileMenu.querySelectorAll('.nav-item');
+         mobileNavItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.dataset.target === targetId) {
+                item.classList.add('active');
+            }
+        });
+    }
+    
+    function displayChallenge(challengeKey) {
+        const challenge = challengesData[challengeKey];
+        if (!challenge) return;
+
+        let evidenceHtml = challenge.evidence.map(item => `<li>${item}</li>`).join('');
+        let webServiceIdeasHtml = challenge.webServiceIdeas.map(item => `<li>${item}</li>`).join('');
+
+        challengeContentArea.innerHTML = `
+            <h3 class="text-xl font-semibold text-sky-700 mb-3">${challenge.title}</h3>
+            <p class="mb-4 text-gray-700">${challenge.summary}</p>
+            
+            <h4 class="font-semibold text-gray-800 mt-4 mb-2">裏付けとなる証拠：</h4>
+            <ul class="list-disc list-inside ml-4 space-y-1 text-gray-700 mb-4">
+                ${evidenceHtml}
+            </ul>
+
+            <div class="accordion-container">
+                <div class="accordion-header">
+                    <h4 class="font-semibold text-gray-800">${challenge.analysisTitle}</h4>
+                    <span class="accordion-icon text-sky-600 text-xl font-bold transform transition-transform duration-300">&#x276F;</span>
+                </div>
+                <div class="accordion-content">
+                    <p class="text-gray-700">${challenge.analysisContent}</p>
+                </div>
+            </div>
+            
+            <h4 class="font-semibold text-gray-800 mt-6 mb-2">提案されるウェブサービス分野：</h4>
+            <ul class="list-disc list-inside ml-4 space-y-1 text-gray-700">
+                ${webServiceIdeasHtml}
+            </ul>
+        `;
+        
+        // Add event listeners for new accordions
+        const accordions = challengeContentArea.querySelectorAll('.accordion-header');
+        accordions.forEach(accordion => {
+            accordion.addEventListener('click', () => {
+                const content = accordion.nextElementSibling;
+                const icon = accordion.querySelector('.accordion-icon');
+                if (content.style.display === 'block') {
+                    content.style.display = 'none';
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.display = 'block';
+                    icon.style.transform = 'rotate(90deg)';
+                }
+            });
+        });
+    }
+
+
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo(item.dataset.target);
+        });
+    });
+    
+    // Mobile menu navigation
+    const mobileNavItems = mobileMenu.querySelectorAll('.nav-item');
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo(item.dataset.target);
+            mobileMenu.classList.add('hidden'); // Close menu after navigation
+        });
+    });
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    if (challengeTabsContainer) {
+        const challengeTabButtons = challengeTabsContainer.querySelectorAll('.tab-button');
+        challengeTabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                challengeTabButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                displayChallenge(button.dataset.challenge);
+            });
+        });
+        // Display initial challenge content
+        if (challengeTabButtons.length > 0) {
+            displayChallenge(challengeTabButtons[0].dataset.challenge);
+        }
+    }
+    
+    // Initial page load
+    navigateTo('home');
+
+    // Charts
+    const populationAgeCtx = document.getElementById('populationAgeChart')?.getContext('2d');
+    if (populationAgeCtx) {
+        new Chart(populationAgeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['15歳未満 (13.57%)', '15～64歳 (69.66%)', '65歳以上 (16.77%)'],
+                datasets: [{
+                    label: '年齢階層別人口割合',
+                    data: [13.57, 69.66, 16.77],
+                    backgroundColor: ['#7dd3fc', '#0ea5e9', '#075985'], // sky-300, sky-500, sky-800
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '戸田市 年齢階層別人口割合',
+                        font: { size: 16, weight: 'bold' },
+                        color: '#0369a1' // sky-700
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    const foreignResidentsCtx = document.getElementById('foreignResidentsChart')?.getContext('2d');
+     if (foreignResidentsCtx) {
+        new Chart(foreignResidentsCtx, {
+            type: 'pie',
+            data: {
+                labels: ['中国人 (約50%)', 'ベトナム人 (増加中)', 'その他外国人', '日本人住民'],
+                datasets: [{
+                    label: '住民構成（外国人関連）',
+                    data: [2.55, 1, 1.55, 94.9], // Assuming 5.1% total foreign, 50% of that is Chinese, Vietnamese increasing, other foreigners, then Japanese
+                    backgroundColor: ['#fca5a5', '#f87171', '#ef4444', '#d1d5db'], // red-300, red-400, red-500, gray-300
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                 plugins: {
+                    title: {
+                        display: true,
+                        text: '戸田市 外国人住民の状況 (概算)',
+                        font: { size: 16, weight: 'bold' },
+                        color: '#0369a1' // sky-700
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.label === '日本人住民') return `日本人住民: 約${context.raw.toFixed(1)}%`;
+                                return `${context.label} (総人口の約${context.raw.toFixed(1)}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    const smeDxCtx = document.getElementById('smeDxChart')?.getContext('2d');
+    if (smeDxCtx) {
+        new Chart(smeDxCtx, {
+            type: 'bar',
+            data: {
+                labels: ['PC導入率', 'メール利用率', '業務管理ソフト利用率'],
+                datasets: [{
+                    label: '中小企業のデジタルツール利用状況 (%)',
+                    data: [80, 70, 25],
+                    backgroundColor: ['#60a5fa', '#38bdf8', '#0ea5e9'], // blue-400, sky-400, sky-500
+                    borderColor: ['#3b82f6', '#0ea5e9', '#0284c7'], // blue-500, sky-500, sky-600
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: function(value) {
+                                return value + "%"
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '戸田市 中小企業のDX化状況',
+                        font: { size: 16, weight: 'bold' },
+                        color: '#0369a1' // sky-700
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
