@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>おっさん大爆破</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        :root {
+            --primary-color: #00ffff; /* Neon Cyan */
+            --secondary-color: #ff00ff; /* Neon Magenta */
+            --background-color: #000010;
+            --font-family: 'Helvetica Neue', 'Arial', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Meiryo', sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000; /* Fallback background */
+            color: var(--primary-color);
+            font-family: var(--font-family);
+            overscroll-behavior: none; /* Pull-to-refreshの無効化 */
+        }
+        #gameCanvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .ui-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Fallback */
+            height: 100dvh; /* FIX: Use dynamic viewport height for mobile */
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+            text-shadow: 0 0 5px var(--secondary-color), 0 0 10px var(--secondary-color);
+        }
+        #reticle {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.7;
+            box-shadow: 0 0 15px var(--primary-color);
+            transition: transform 0.2s ease-out;
+        }
+        #reticle.hit {
+            transform: translate(-50%, -50%) scale(1.5);
+            background-color: rgba(255, 0, 255, 0.5);
+        }
+        #score {
+            margin-top: 20px;
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+        #fireButton {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(255,0,255,0.8) 0%, rgba(0,255,255,0.6) 100%);
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            margin-bottom: 40px;
+            pointer-events: auto;
+            cursor: pointer;
+            box-shadow: 0 0 25px var(--secondary-color), inset 0 0 15px white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8em;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 0 5px black;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            transition: transform 0.1s ease;
+        }
+        #fireButton:active {
+            transform: scale(0.95);
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Fallback */
+            height: 100dvh; /* FIX: Use dynamic viewport height for mobile */
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            pointer-events: auto;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: rgba(10, 20, 40, 0.9);
+            border: 2px solid var(--primary-color);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 30px var(--primary-color);
+        }
+        .modal h1 {
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+            color: white;
+            text-shadow: 0 0 15px var(--secondary-color);
+        }
+        .modal p {
+            font-size: 1.2em;
+            color: #eee;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        .modal button {
+            padding: 15px 40px;
+            font-size: 1.5em;
+            border: 2px solid var(--primary-color);
+            background-color: transparent;
+            color: var(--primary-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px var(--primary-color);
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+        .modal button:hover, .modal button:active {
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            box-shadow: 0 0 25px var(--primary-color), 0 0 40px var(--secondary-color);
+        }
+        #flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: white;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="startModal" class="modal">
+        <div class="modal-content">
+            <h1>おっさん大爆破</h1>
+            <p>スマホを傾けて照準を合わせ、<br>ボタンをタップしておっさんを撃て！<br><br><b>[PC] 矢印キー: 照準, スペース/クリック: 発射</b></p>
+            <p style="font-size: 0.9em; opacity: 0.7;">※サウンドが再生されます</p>
+            <button id="startButton">ゲーム開始</button>
+        </div>
+    </div>
+    
+    <div id="gameOverModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h1>ゲームオーバー</h1>
+            <p>最終スコア: <span id="finalScore">0</span></p>
+            <button id="restartButton">もう一度</button>
+        </div>
+    </div>
+
+    <div class="ui-container">
+        <div id="score">SCORE: 0</div>
+        <div id="reticle"></div>
+        <div id="fireButton">発射</div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+    <div id="flash"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+
+    <script>
+        // --- Base64 Encoded Assets ---
+        const ossanFaceBase64 = 'data:image/png;base64,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';
+        const explosionSpriteBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACyUlEQVR42u2bv2sUQRTHx7pQjCgCYiFIxErwA4lYLEQspBYLEbQTbAEr0QihtBMsBDsLNkGwsBAsRCxELMQiHhYhxoVIhCgYKYpYiCgixsPMWXZ3d2b27+x9cB52d/d98+23e3e3Iikpxr+qgKqAqoAq4F4F1NLS6vT09A201u3o6Lh9+3ZVVVULqNVGo9F3aDR6fHx8o9F4gABpQKVSCQQCbm5u+u7A0tLSzM7OBiB4enqa2d8CAEQikbm5uT4/PzeZTAUA6urqFBcXR0RElJaW+g0A3d3dOjo6pKenZ2RkDA0N/QYA/v33X5WVlV988cV35J1AIPjmm28qKytPnz49NTX1yMgIAFBdXZ2ammpoaDh16lR6ejojI4MoAOTk5DQ1NQsLCyORyMDAwLi4OMMA2tvb5+bmDg0NZWdnOzo6/Pz8/Pz80Ery8vKqqqrS0tKqqqqysjKjAOTm5pSWlra2tu7o6NDS0jI2Nvb09GiaBwCgUqnk5eU5ODhkZ2dHRkaGh4cHBwe7uLgg/x8BAPj6+vLy8jY2Njo6OmZlZYWFhV1dXX18fOT3wGg0NjU1ubi4GB0djUqlkpKSAgBsbW33799/++238/Pzd+/e/fvvvx8dHQUAlJaWcnJyhoeHL1++bGlpuXHjxkQi8fLyAgCg0WiCgoIqKysrKiqoqqiYmZkBALm5uUql0u3t7erqamBgYGho6NSpUyqVqqKiIjk5ubKy8u3bt6uqqjQajbm5uQBAUVHRvXv3bt++PTQ01NjYGA/k5+fX1tYWFBTk5+fX1tbk94CtrS0AEBQUZGJiYmJicnJyYmJivp8fAODj4/M3r7y8PCAgIDAwMDAw0N/ff2Bg4OLiAgDA39/f399fXl7u4uICABQUFBQUFBQUFBcXF9va2jRNW1hYCAQCv/zyi5OTE3/a2L6rAKo+qgKqAqr+qwIvBfhD98W+2bIs/zAAAAAASUVORK5CYII=';
+
+        // --- Game Core Variables ---
+        let scene, camera, renderer, clock, gyroControls;
+        let bullets = [], ossans = [], explosions = [];
+        let score = 0;
+        let isGameOver = false;
+        let isGyroAvailable = false;
+        let isAudioReady = false;
+        const ossanBaseSpeed = 0.05;
+        const bulletSpeed = 2.5;
+        const ossanSpawnInterval = 1000;
+        let lastOssanSpawnTime = 0;
+        let gameTime = 0;
+
+        // --- PC Debug Controls ---
+        const keyboardState = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false };
+        const rotationSpeed = 1.5;
+        const euler = new THREE.Euler(0, 0, 0, 'YXZ');
+
+        // --- Audio Components ---
+        let laserSynth, explosionSynth, bgm;
+
+        // --- DOM Elements ---
+        const startModal = document.getElementById('startModal'),
+              gameOverModal = document.getElementById('gameOverModal'),
+              startButton = document.getElementById('startButton'),
+              restartButton = document.getElementById('restartButton'),
+              fireButton = document.getElementById('fireButton'),
+              scoreElement = document.getElementById('score'),
+              finalScoreElement = document.getElementById('finalScore'),
+              reticle = document.getElementById('reticle'),
+              flashEffect = document.getElementById('flash');
+
+        // --- Main Game Functions ---
+        function init() {
+            scene = new THREE.Scene();
+            clock = new THREE.Clock();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 1.6, 0);
+
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gameCanvas'), antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            createEnvironment();
+            setupLighting();
+
+            window.addEventListener('resize', onWindowResize, false);
+            fireButton.addEventListener('touchstart', (e) => { e.preventDefault(); fire(); }, false);
+            fireButton.addEventListener('click', fire, false);
+            window.addEventListener('keydown', onKeyDown);
+            window.addEventListener('keyup', onKeyUp);
+            startButton.addEventListener('click', handleStart);
+            restartButton.addEventListener('click', restartGame);
+        }
+
+        function setupAudio() {
+            laserSynth = new Tone.Synth({
+                oscillator: { type: 'sawtooth' },
+                envelope: { attack: 0.01, decay: 0.05, sustain: 0, release: 0.1 }
+            }).toDestination();
+            laserSynth.volume.value = -12;
+
+            explosionSynth = new Tone.NoiseSynth({
+                noise: { type: 'white' },
+                envelope: { attack: 0.005, decay: 0.2, sustain: 0.01, release: 0.2 }
+            }).toDestination();
+            explosionSynth.volume.value = -6;
+            
+            const bgmSynth = new Tone.Synth({
+                oscillator: { type: 'pulse', width: 0.6 },
+                envelope: { attack: 0.1, decay: 0.3, sustain: 0.1, release: 0.8 }
+            }).toDestination();
+            bgmSynth.volume.value = -20;
+            
+            bgm = new Tone.Loop(time => {
+                bgmSynth.triggerAttackRelease('C2', '8n', time);
+                bgmSynth.triggerAttackRelease('G2', '8n', time + Tone.Time('4n').toSeconds());
+            }, '2n');
+
+            isAudioReady = true;
+        }
+
+        function createEnvironment() {
+            // Simple, stable background
+            scene.background = new THREE.Color(0x87CEEB); // Sky blue
+            scene.fog = new THREE.Fog(0x87CEEB, 40, 90);
+
+            // Simple ground plane
+            const groundGeo = new THREE.PlaneGeometry(500, 500);
+            const groundMat = new THREE.MeshStandardMaterial({ color: 0x228B22, roughness: 1, metalness: 0 }); // ForestGreen
+            const ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.rotation.x = -Math.PI / 2;
+            scene.add(ground);
+        }
+
+        function setupLighting() {
+            const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 2);
+            hemiLight.position.set(0, 20, 0);
+            scene.add(hemiLight);
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+            dirLight.position.set(30, 50, 20);
+            scene.add(dirLight);
+        }
+
+        function createOssan() {
+            const ossanTexture = new THREE.TextureLoader().load(ossanFaceBase64);
+            const ossanMaterial = new THREE.SpriteMaterial({ map: ossanTexture, transparent: true });
+            const ossan = new THREE.Sprite(ossanMaterial);
+
+            const spawnRadius = 70;
+            const baseAngle = -Math.PI / 2;
+            const arcWidth = (Math.PI * 2) / 3;
+            const randomOffset = (Math.random() - 0.5) * arcWidth;
+            const angle = baseAngle + randomOffset;
+
+            ossan.position.set(Math.cos(angle) * spawnRadius, 2, Math.sin(angle) * spawnRadius);
+            ossan.scale.set(4, 4, 4);
+            scene.add(ossan);
+            ossans.push(ossan);
+        }
+
+        function fire() {
+            if (isGameOver || startModal.style.display !== 'none') return;
+            
+            if (isAudioReady) {
+                laserSynth.triggerAttackRelease('G5', '32n');
+                laserSynth.frequency.rampTo('C6', 0.1);
+            }
+
+            const bulletGroup = new THREE.Group();
+            
+            const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 2 });
+            const core = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), coreMat);
+            
+            const glowMat = new THREE.MeshBasicMaterial({ color: 0x00ffff, emissive: 0x00ffff, emissiveIntensity: 2, transparent: true, opacity: 0.4 });
+            const glow = new THREE.Mesh(new THREE.SphereGeometry(0.16, 8, 8), glowMat);
+
+            const trail = new THREE.PointLight(0x00ffff, 2.5, 10);
+            
+            bulletGroup.add(core, glow, trail);
+            bulletGroup.isBullet = true;
+
+            const direction = new THREE.Vector3();
+            camera.getWorldDirection(direction);
+            bulletGroup.position.copy(camera.position).add(direction.clone().multiplyScalar(0.5));
+            bulletGroup.velocity = direction.multiplyScalar(bulletSpeed);
+
+            scene.add(bulletGroup);
+            bullets.push(bulletGroup);
+        }
+
+        function createExplosion(position) {
+            if (isAudioReady) {
+                explosionSynth.triggerAttackRelease('16n');
+            }
+            const explosionTexture = new THREE.TextureLoader().load(explosionSpriteBase64);
+            const explosionMaterial = new THREE.PointsMaterial({
+                color: 0xffaa00, size: 0.8, map: explosionTexture, blending: THREE.AdditiveBlending,
+                transparent: true, depthWrite: false,
+            });
+
+            const explosionGeometry = new THREE.BufferGeometry();
+            const vertices = [], velocities = [];
+            for (let i = 0; i < 80; i++) {
+                vertices.push(0, 0, 0);
+                velocities.push(new THREE.Vector3((Math.random()-0.5), (Math.random()-0.5), (Math.random()-0.5)).normalize().multiplyScalar(Math.random()*0.4));
+            }
+            explosionGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            
+            const explosion = new THREE.Points(explosionGeometry, explosionMaterial);
+            explosion.position.copy(position);
+            explosion.velocities = velocities;
+            explosion.lifetime = 1.2;
+            scene.add(explosion);
+            explosions.push(explosion);
+            
+            flashEffect.style.opacity = 0.8;
+            setTimeout(() => { flashEffect.style.opacity = 0; }, 60);
+        }
+
+        function updateScore(points) {
+            score += points;
+            scoreElement.innerText = 'SCORE: ' + score;
+        }
+
+        function animate() {
+            if (isGameOver) return;
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            gameTime += delta;
+
+            // Try gyro first, fallback to keyboard if no gyro data
+            if (gyroControls) {
+                gyroControls.update();
+            }
+            // Always allow keyboard controls (for PC or as backup)
+            updateKeyboardControls(delta);
+            
+            const currentSpawnInterval = Math.max(200, ossanSpawnInterval - gameTime * 10);
+            const currentOssanSpeed = ossanBaseSpeed + gameTime * 0.001;
+
+            if (clock.getElapsedTime() - lastOssanSpawnTime > currentSpawnInterval / 1000) {
+                 createOssan();
+                 lastOssanSpawnTime = clock.getElapsedTime();
+            }
+
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                const bullet = bullets[i];
+                bullet.position.add(bullet.velocity);
+                
+                if (bullet.isBullet) {
+                    bullet.scale.setScalar(1 + Math.sin(gameTime * 40) * 0.15);
+                }
+
+                if (bullet.position.distanceTo(camera.position) > 150) {
+                    scene.remove(bullet);
+                    bullets.splice(i, 1);
+                }
+            }
+            
+            let hitDetected = false;
+
+            for (let i = ossans.length - 1; i >= 0; i--) {
+                const ossan = ossans[i];
+                const direction = new THREE.Vector3(camera.position.x - ossan.position.x, 0, camera.position.z - ossan.position.z).normalize();
+                ossan.position.add(direction.multiplyScalar(currentOssanSpeed));
+                
+                if (ossan.position.distanceTo(camera.position) < 1.5) {
+                    gameOver();
+                    break;
+                }
+
+                for (let j = bullets.length - 1; j >= 0; j--) {
+                    const bullet = bullets[j];
+                    if (bullet.position.distanceTo(ossan.position) < 2) {
+                        createExplosion(ossan.position);
+                        updateScore(100);
+                        hitDetected = true;
+                        scene.remove(ossan);
+                        ossans.splice(i, 1);
+                        scene.remove(bullet);
+                        bullets.splice(j, 1);
+                        break; 
+                    }
+                }
+            }
+
+            if (hitDetected) {
+                reticle.classList.add('hit');
+                setTimeout(() => reticle.classList.remove('hit'), 200);
+            }
+            
+            for (let i = explosions.length - 1; i >= 0; i--) {
+                const explosion = explosions[i];
+                explosion.lifetime -= delta;
+                if(explosion.lifetime <= 0) {
+                    scene.remove(explosion);
+                    explosions.splice(i, 1);
+                    continue;
+                }
+
+                const positions = explosion.geometry.attributes.position.array;
+                for(let j=0; j<positions.length/3; j++) {
+                    positions[j*3] += explosion.velocities[j].x;
+                    positions[j*3+1] += explosion.velocities[j].y;
+                    positions[j*3+2] += explosion.velocities[j].z;
+                }
+                explosion.geometry.attributes.position.needsUpdate = true;
+                explosion.material.opacity = explosion.lifetime;
+            }
+
+            renderer.render(scene, camera);
+        }
+        
+        function updateKeyboardControls(delta) {
+            euler.setFromQuaternion(camera.quaternion);
+            if (keyboardState.ArrowLeft)  euler.y += rotationSpeed * delta;
+            if (keyboardState.ArrowRight) euler.y -= rotationSpeed * delta;
+            if (keyboardState.ArrowUp)    euler.x += rotationSpeed * delta;
+            if (keyboardState.ArrowDown)  euler.x -= rotationSpeed * delta;
+            euler.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, euler.x));
+            camera.quaternion.setFromEuler(euler);
+        }
+
+        function GyroControls() {
+            const deviceOrientation = {};
+            let screenOrientation = window.orientation || 0;
+            const onDeviceOrientationChangeEvent = (e) => { Object.assign(deviceOrientation, e); };
+            const onScreenOrientationChangeEvent = () => { screenOrientation = window.orientation || 0; };
+            const q1 = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5));
+            const q0 = new THREE.Quaternion();
+            const zee = new THREE.Vector3(0, 0, 1);
+            this.connect = () => {
+                onScreenOrientationChangeEvent();
+                window.addEventListener('orientationchange', onScreenOrientationChangeEvent);
+                window.addEventListener('deviceorientation', onDeviceOrientationChangeEvent);
+            };
+            this.update = function() {
+                // Check if we have valid orientation data
+                if (deviceOrientation.alpha === undefined && 
+                    deviceOrientation.beta === undefined && 
+                    deviceOrientation.gamma === undefined) return;
+                
+                // Use 0 as fallback for undefined values
+                const alpha = THREE.MathUtils.degToRad(deviceOrientation.alpha || 0),
+                      beta = THREE.MathUtils.degToRad(deviceOrientation.beta || 0),
+                      gamma = THREE.MathUtils.degToRad(deviceOrientation.gamma || 0),
+                      orient = THREE.MathUtils.degToRad(screenOrientation);
+                
+                const euler = new THREE.Euler(beta, alpha, -gamma, 'YXZ');
+                camera.quaternion.setFromEuler(euler);
+                camera.quaternion.multiply(q1);
+                camera.quaternion.multiply(q0.setFromAxisAngle(zee, -orient));
+            };
+        }
+
+        function onKeyDown(event) {
+            if (keyboardState.hasOwnProperty(event.key)) keyboardState[event.key] = true;
+            if (event.code === 'Space') { event.preventDefault(); fire(); }
+        }
+        function onKeyUp(event) {
+            if (keyboardState.hasOwnProperty(event.key)) keyboardState[event.key] = false;
+        }
+
+        // FIX: Renamed and refactored the start process
+        async function handleStart() {
+            // This function is now the single entry point for starting the game.
+            
+            // 1. Initialize Audio
+            if (Tone.context.state !== 'running') {
+                await Tone.start();
+            }
+            if (!isAudioReady) {
+                setupAudio();
+            }
+
+            // 2. Request Gyroscope Permission (for iOS)
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                try {
+                    const permission = await DeviceOrientationEvent.requestPermission();
+                    if (permission === 'granted') {
+                        isGyroAvailable = true;
+                    }
+                } catch (error) {
+                    console.warn("ジャイロセンサーの許可リクエストが拒否、またはエラーが発生しました。");
+                }
+            } else {
+                // For Android, set up gyro detection
+                isGyroAvailable = true; // Assume gyro is available on Android
+                window.addEventListener('deviceorientation', (event) => {
+                    // If we get actual orientation data, we know gyro is working
+                    if (event.alpha !== null || event.beta !== null || event.gamma !== null) {
+                        isGyroAvailable = true;
+                    }
+                }, { once: true });
+            }
+            
+            // 3. Start the actual game logic
+            startGame();
+        }
+
+        function startGame() {
+            startModal.style.display = 'none';
+            isGameOver = false;
+            score = 0;
+            gameTime = 0;
+            updateScore(0);
+            
+            [...bullets, ...ossans, ...explosions].forEach(obj => {
+                if(obj.children) {
+                    obj.children.forEach(child => {
+                        if (child.geometry) child.geometry.dispose();
+                        if (child.material) child.material.dispose();
+                    });
+                }
+                if(obj.geometry) obj.geometry.dispose();
+                if(obj.material) obj.material.dispose();
+                scene.remove(obj);
+            });
+            bullets = []; ossans = []; explosions = [];
+            
+            // Initialize controls - always create gyro controls for mobile devices
+            if (!gyroControls) {
+                gyroControls = new GyroControls();
+                gyroControls.connect();
+            }
+
+            if(isAudioReady) {
+                Tone.Transport.start();
+                bgm.start(0);
+            }
+
+            lastOssanSpawnTime = clock.getElapsedTime();
+            animate();
+        }
+        
+        function gameOver() {
+            isGameOver = true;
+            if (isAudioReady) {
+                bgm.stop();
+                Tone.Transport.stop();
+            }
+            finalScoreElement.innerText = score;
+            gameOverModal.style.display = 'flex';
+        }
+        function restartGame() {
+            gameOverModal.style.display = 'none';
+            // We can directly call startGame as permissions are already handled.
+            startGame();
+        }
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        init();
+    </script>
+</body>
+</html>
