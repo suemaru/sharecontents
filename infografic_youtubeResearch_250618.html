@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本のYouTubeドラマ市場：インフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #FF6B6B, #FFD166);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .flow-arrow::after {
+            content: '→';
+            font-size: 2rem;
+            color: #118AB2;
+            margin: 0 1rem;
+        }
+        .flow-arrow:last-child::after {
+            content: '';
+        }
+    </style>
+</head>
+<body class="bg-[#073B4C] text-gray-800">
+
+    <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center my-12">
+            <h1 class="text-4xl md:text-6xl font-black text-white leading-tight">ショートドラマ革命</h1>
+            <p class="mt-4 text-lg md:text-2xl font-bold gradient-text">日本のYouTube市場を再定義する新たなエコシステム</p>
+        </header>
+
+        <main class="space-y-16">
+
+            <section id="taipa" class="text-center bg-white rounded-xl shadow-2xl p-8 transform hover:scale-105 transition-transform duration-300">
+                <h2 class="text-2xl font-bold text-[#073B4C]">Z世代の新たな視聴習慣</h2>
+                <p class="text-7xl md:text-9xl font-extrabold my-4 text-[#118AB2]">タイパ</p>
+                <p class="text-lg font-semibold text-gray-700">(タイムパフォーマンス)</p>
+                <p class="mt-4 max-w-2xl mx-auto text-gray-600">
+                    費やす時間に対して満足度を最大化したいという需要が、数分で完結するショートドラマの人気を爆発させました。移動中や休憩中といった「スキマ時間」が、新たなエンターテインメントの消費シーンとなっています。
+                </p>
+            </section>
+            
+            <section id="market-structure" class="bg-white rounded-xl shadow-2xl p-6 md:p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="prose max-w-none">
+                        <h2 class="text-3xl font-bold text-[#073B4C]">市場を動かす4つの勢力</h2>
+                        <p class="text-gray-600">
+                            日本のYouTubeドラマ市場は、単一のビジネスモデルではなく、異なる目的と戦略を持つ4つの主要プレイヤーによって構成される複雑なエコシステムです。それぞれが市場の成長と多様性に貢献しています。
+                        </p>
+                        <ul class="mt-4 space-y-2 text-gray-700">
+                            <li><strong class="text-[#FF6B6B]">■ 独立系スタジオ:</strong> 市場のトレンドを創るパイオニア。</li>
+                            <li><strong class="text-[#FFD166]">■ テレビ局:</strong> デジタル戦略で若者層にリーチ。</li>
+                            <li><strong class="text-[#06D6A0]">■ アプリ誘導型:</strong> YouTubeを集客の入口として活用。</li>
+                            <li><strong class="text-[#118AB2]">■ 企業PR:</strong> 物語でブランド価値を伝える。</li>
+                        </ul>
+                    </div>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="marketCompositionChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="key-players" class="bg-white rounded-xl shadow-2xl p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-center text-[#073B4C]">トッププレイヤーたちの影響力</h2>
+                <p class="text-center mt-2 mb-8 max-w-3xl mx-auto text-gray-600">各カテゴリーの代表的なチャンネルは、数十万から数百万の登録者を抱え、巨大な影響力を持っています。ここではその一部を紹介します。</p>
+                <div class="chart-container h-[500px] max-h-[600px]">
+                    <canvas id="topChannelsChart"></canvas>
+                </div>
+            </section>
+
+            <section id="business-models" class="space-y-16">
+                <h2 class="text-3xl font-bold text-center text-white">成功を支えるビジネスモデル</h2>
+                
+                <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#073B4C]">モデル1: アプリ誘導型ファネル</h3>
+                    <p class="mt-2 mb-8 text-gray-600">YouTubeを「予告編」として利用し、視聴者を自社アプリへ誘導して直接収益化する戦略です。</p>
+                    <div class="flex flex-col md:flex-row items-center justify-center text-center flex-wrap">
+                        <div class="flex flex-col items-center p-4">
+                            <span class="text-5xl mb-2">▶️</span>
+                            <h4 class="font-bold text-lg">YouTubeで配信</h4>
+                            <p class="text-sm text-gray-500">作品の一部を無料で公開</p>
+                        </div>
+                        <div class="flow-arrow hidden md:flex"></div>
+                        <div class="text-4xl my-2 md:hidden">↓</div>
+                        <div class="flex flex-col items-center p-4">
+                            <span class="text-5xl mb-2">📱</span>
+                            <h4 class="font-bold text-lg">アプリへ誘導</h4>
+                            <p class="text-sm text-gray-500">「続きはアプリで」と告知</p>
+                        </div>
+                        <div class="flow-arrow hidden md:flex"></div>
+                         <div class="text-4xl my-2 md:hidden">↓</div>
+                        <div class="flex flex-col items-center p-4">
+                            <span class="text-5xl mb-2">💰</span>
+                            <h4 class="font-bold text-lg">直接収益化</h4>
+                            <p class="text-sm text-gray-500">サブスクやアプリ内課金</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#073B4C]">モデル2: 企業PR (アドバテイメント)</h3>
+                    <p class="mt-2 mb-8 text-gray-600">製品を直接宣伝するのではなく、ブランドの価値観を物語に込めて視聴者の共感を呼び、好意を醸成します。</p>
+                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-lg text-[#118AB2]">PERSOL</h4>
+                            <p class="text-sm text-gray-600 mt-1">父と娘の物語で「働く人の価値」を伝え、ブランド理念への共感を深める。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-lg text-[#118AB2]">日本航空 (JAL)</h4>
+                             <p class="text-sm text-gray-600 mt-1">旅先での感動的な物語を通じ、「特別な体験」を提供するブランドとして認識させる。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold text-lg text-[#118AB2]">Canva</h4>
+                             <p class="text-sm text-gray-600 mt-1">製品の便利さをコミカルな日常劇で描き、広告感なく機能の魅力を伝える。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="monetization" class="bg-white rounded-xl shadow-2xl p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-center text-[#073B4C]">多様化する収益化マトリックス</h2>
+                <p class="text-center mt-2 mb-8 max-w-3xl mx-auto text-gray-600">成功しているチャンネルは、単一の収益源に頼らず、複数のモデルを戦略的に組み合わせています。</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="py-3 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600 border-b border-gray-200">プレイヤー種別</th>
+                                <th class="py-3 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600 border-b border-gray-200 text-center">広告収益</th>
+                                <th class="py-3 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600 border-b border-gray-200 text-center">企業案件</th>
+                                <th class="py-3 px-4 bg-gray-100 font-bold uppercase text-sm text-gray-600 border-b border-gray-200 text-center">アプリ課金</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-3 px-4 border-b border-gray-200 font-semibold">独立系スタジオ</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🟢</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🟢</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🟠</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="py-3 px-4 border-b border-gray-200 font-semibold">テレビ局</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🟢</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🟠</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🔴</td>
+                            </tr>
+                             <tr class="hover:bg-gray-50">
+                                <td class="py-3 px-4 border-b border-gray-200 font-semibold">アプリ誘導型</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🟠</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🔴</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🟢</td>
+                            </tr>
+                             <tr class="hover:bg-gray-50">
+                                <td class="py-3 px-4 border-b border-gray-200 font-semibold">企業PR</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🔴</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🟢</td>
+                                <td class="py-3 px-4 border-b border-gray-200 text-center text-2xl">🔴</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                             <tr>
+                                <td colspan="4" class="pt-4 text-sm text-gray-500">
+                                   凡例: 🟢 主力 / 🟠 一部活用 / 🔴 該当しない
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center my-16 text-gray-400">
+             <p class="font-bold">今後の展望</p>
+             <p class="text-sm max-w-2xl mx-auto">
+                ジャンルの深化、グローバルコンテンツのローカライズ競争、そして新たな才能発掘のルート確立など、日本のYouTubeドラマ市場は今後も進化を続けます。このダイナミックなエコシステムは、未来のメディアの姿を映し出しています。
+             </p>
+        </footer>
+
+    </div>
+
+    <script>
+        const wrapLabel = (str, maxWidth) => {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+        
+        const tooltipTitleCallback = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+        const chartColors = {
+            red: '#FF6B6B',
+            yellow: '#FFD166',
+            green: '#06D6A0',
+            blue: '#118AB2',
+            darkBlue: '#073B4C'
+        };
+
+        const ctxMarket = document.getElementById('marketCompositionChart').getContext('2d');
+        new Chart(ctxMarket, {
+            type: 'doughnut',
+            data: {
+                labels: ['独立系スタジオ', 'テレビ局', 'アプリ誘導型', '企業PR・ブランディング'],
+                datasets: [{
+                    label: '市場構成',
+                    data: [35, 25, 25, 15],
+                    backgroundColor: [
+                        chartColors.red,
+                        chartColors.yellow,
+                        chartColors.green,
+                        chartColors.blue
+                    ],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#073B4C',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: tooltipTitleCallback.plugins.tooltip
+                }
+            }
+        });
+
+        const ctxTopChannels = document.getElementById('topChannelsChart').getContext('2d');
+        new Chart(ctxTopChannels, {
+            type: 'bar',
+            data: {
+                labels: [
+                    '佐藤 健 / Satoh Takeru',
+                    '仲里依紗です。',
+                    'TBS公式 YouTuboo',
+                    '日テレ公式チャンネル',
+                    wrapLabel('kouichitv', 16),
+                    'ごっこ倶楽部',
+                    'ぱくしードラマ',
+                    'BUMPドラマ【公式】',
+                    wrapLabel('日テレドラマ公式チャンネル', 16),
+                ].reverse(),
+                datasets: [{
+                    label: 'チャンネル登録者数 (万人)',
+                    data: [226, 207, 128, 110, 86.1, 78.8, 46.9, 44.3, 39].reverse(),
+                    backgroundColor: [
+                        chartColors.blue,
+                        chartColors.blue,
+                        chartColors.yellow,
+                        chartColors.yellow,
+                        chartColors.red,
+                        chartColors.red,
+                        chartColors.red,
+                        chartColors.green,
+                        chartColors.yellow
+                    ].reverse(),
+                    borderRadius: 5,
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: tooltipTitleCallback.plugins.tooltip
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            color: chartColors.darkBlue,
+                            font: {
+                                size: 12,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    x: {
+                         ticks: {
+                            color: chartColors.darkBlue,
+                        },
+                        grid: {
+                            color: '#e0e0e0',
+                            borderDash: [5, 5]
+                        },
+                        title: {
+                            display: true,
+                            text: '登録者数 (万人)',
+                            color: chartColors.darkBlue
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
