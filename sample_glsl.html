@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>Xor Shader Clicker</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#000;font-family:sans-serif}
+  #wrap{position:relative;width:100%;height:100%}
+  canvas{position:absolute;top:0;left:0;width:100%;height:100%;display:block}
+  #ui{position:absolute;top:10px;left:10px;color:#fff;font-size:18px;text-shadow:0 0 4px #000}
+</style>
+
+<body>
+<div id="wrap">
+  <!-- 背景シェーダー用 -->
+  <canvas id="bg"></canvas>
+  <!-- ゲーム用（的＆クリック判定） -->
+  <canvas id="game"></canvas>
+  <!-- スコア表示 -->
+  <div id="ui">Score: <span id="score">0</span></div>
+</div>
+
+<!-- === glslCanvas ライブラリ === -->
+<script src="https://cdn.jsdelivr.net/npm/glsl-canvas-js@1.4.3/dist/glsl-canvas.min.js"></script>
+
+<!-- === Xor シェーダーをフル GLSL 化 === -->
+<script id="frag" type="x-shader/x-fragment">
+#ifdef GL_ES
+precision highp float;
+#endif
+uniform float u_time;
+uniform vec2  u_resolution;
+
+#define t u_time
+#define FC gl_FragCoord
+// 画面中心を (0,0)、縦幅で正規化
+#define r ((FC.xy - 0.5 * u_resolution) / u_resolution.y)
+
+void main() {
+    vec3 o = vec3(0.0), p;
+    float z = 0.0, d = 1.0, n;
+
+    for (float i = 0.0; i < 200.0; i++) {
+        o += (cos(t + vec4(0.0, 2.0, 4.0, 0.0)) + 2.0) / (d * d);
+
+        n = fract(0.5 * t + pow(fract(d * 1e4), 0.1));
+
+        vec3 fc = vec3(FC.xy, 1.0);
+        p  = z * normalize(fc * 2.0 - vec3(r, 0.0).xyy)
+           + vec3(n, n * (n + n - 3.0) / 0.1 + 9.0, 7.0);
+
+        d  = length(p);
+        z += d = 0.1 * length(vec3(d * 0.3 - n * n * n,
+                    cos(n + atan(p.z, d)) * 0.3 * n * n));
+    }
+    o = tanh(o / 6e5);
+    gl_FragColor = vec4(o, 1.0);
+}
+</script>
+
+<script>
+/* ---------- シェーダー背景 ---------- */
+const bgCanvas   = document.getElementById('bg');
+new GlslCanvas(bgCanvas).load(document.getElementById('frag').textContent);
+
+/* ---------- ゲームロジック ---------- */
+const gameCanvas = document.getElementById('game');
+const ctx        = gameCanvas.getContext('2d');
+let W, H;
+
+function resize() {
+  W = gameCanvas.width  = bgCanvas.width  = window.innerWidth;
+  H = gameCanvas.height = bgCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+/* --- 的データ --- */
+let target = {x: W/2, y: H/2, r: 40};
+let score  = 0;
+let playing = false;
+const uiScore = document.getElementById('score');
+
+/* --- 的を描画 --- */
+function drawTarget() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.beginPath();
+  ctx.arc(target.x, target.y, target.r, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255,60,60,0.85)';
+  ctx.fill();
+}
+
+/* --- 的をランダム配置 --- */
+function newTarget() {
+  target.r = 35 + Math.random() * 25;      // 半径 35〜60
+  target.x = target.r + Math.random() * (W - target.r*2);
+  target.y = target.r + Math.random() * (H - target.r*2);
+  drawTarget();
+}
+
+/* --- クリック判定 --- */
+gameCanvas.addEventListener('pointerdown', e => {
+  if (!playing) return;
+  const rect = gameCanvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const dist = Math.hypot(mx - target.x, my - target.y);
+
+  if (dist <= target.r) {
+    score++;
+    uiScore.textContent = score;
+    newTarget();
+  }
+});
+
+/* --- ゲーム開始 & 終了 --- */
+function startGame() {
+  score = 0;
+  uiScore.textContent = score;
+  playing = true;
+  newTarget();
+
+  const DURATION = 20_000;  // 20 秒
+  setTimeout(() => {
+    playing = false;
+    ctx.clearRect(0, 0, W, H);
+    alert(`Time up!\nYour Score: ${score}`);
+  }, DURATION);
+}
+
+startGame();  // ページ読み込みと同時に開始
+</script>
+</body>
+</html>
